@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         if(isWriteStorageAllowed()){
             //If permission is already having then showing the toast
             //Toast.makeText(MainActivity.this,"You already have the permission",Toast.LENGTH_LONG).show();
-            //Existing the method with return
             return;
         }
 
@@ -167,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
     private void requestStoragePermission(){
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
             //Explain here why you need this permission
             Toast.makeText(MainActivity.this,"We need Storage Permission for Exporting Files",Toast.LENGTH_LONG).show();
         }
