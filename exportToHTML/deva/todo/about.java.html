@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>about.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+about.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">deva.todo; 
+ 
+</span><span class="s0">import </span><span class="s1">android.app.AlertDialog; 
+</span><span class="s0">import </span><span class="s1">android.content.DialogInterface; 
+</span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.util.Log; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.widget.Button; 
+</span><span class="s0">import </span><span class="s1">android.widget.Spinner; 
+ 
+</span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
+</span><span class="s0">import </span><span class="s1">java.io.File; 
+</span><span class="s0">import </span><span class="s1">java.io.FileInputStream; 
+</span><span class="s0">import </span><span class="s1">java.io.FileOutputStream; 
+</span><span class="s0">import </span><span class="s1">java.io.IOException; 
+</span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
+</span><span class="s0">import </span><span class="s1">java.text.DateFormat; 
+</span><span class="s0">import </span><span class="s1">java.text.SimpleDateFormat; 
+</span><span class="s0">import </span><span class="s1">java.util.Calendar; 
+ 
+</span><span class="s0">public class </span><span class="s1">about </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+        setContentView(R.layout.activity_about); 
+        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;At Activity_About onCreate()&quot;</span><span class="s1">); 
+ 
+        Button bExport = (Button) findViewById(R.id.button4); 
+        bExport.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() { 
+            @Override 
+            </span><span class="s0">public void </span><span class="s1">onClick(View v) { 
+                export_function(); 
+            } 
+        }); 
+    } 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onPause() { 
+        </span><span class="s0">super</span><span class="s1">.onPause(); 
+        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;Inside About_activity.onPause()&quot;</span><span class="s1">); 
+        Spinner spinner = (Spinner)findViewById(R.id.spinner); 
+        </span><span class="s0">assert </span><span class="s1">spinner != </span><span class="s0">null</span><span class="s1">; 
+        String text = String.valueOf(spinner.getSelectedItem()); 
+        </span><span class="s0">try </span><span class="s1">{ 
+            FileOutputStream fileOutputStream = openFileOutput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">,MODE_PRIVATE); 
+            fileOutputStream.write((text).getBytes()); 
+            fileOutputStream.close(); 
+            Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;spinner.txt created!&quot;</span><span class="s1">); 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+            e.printStackTrace(); 
+        } 
+        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;About_activity completed.&quot;</span><span class="s1">); 
+    } 
+ 
+    </span><span class="s0">private void </span><span class="s1">export_function() 
+    { 
+        DateFormat df = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s2">&quot;EEE, d MMM yyyy HH:mm:ss Z&quot;</span><span class="s1">);        </span><span class="s3">//Wed, 4 Jul 2008 12:08:56 -0530</span><span class="s1"> 
+        String date = df.format(Calendar.getInstance().getTime()); 
+        String data; 
+        </span><span class="s0">int </span><span class="s1">i; 
+        </span><span class="s0">try </span><span class="s1">{ 
+ 
+            File directory = </span><span class="s0">new </span><span class="s1">File(</span><span class="s2">&quot;/sdcard/Documents&quot;</span><span class="s1">); 
+            </span><span class="s0">if </span><span class="s1">(!directory.exists()) { 
+                directory.mkdir(); 
+            } 
+            File myFile = </span><span class="s0">new </span><span class="s1">File(</span><span class="s2">&quot;/sdcard/Documents/my_todo_list.txt&quot;</span><span class="s1">);             </span><span class="s3">//Export file creation</span><span class="s1"> 
+            myFile.createNewFile(); 
+            FileOutputStream fos = </span><span class="s0">new </span><span class="s1">FileOutputStream(myFile, </span><span class="s0">false</span><span class="s1">); 
+ 
+            FileInputStream fileInputStream = openFileInput(</span><span class="s2">&quot;data1.txt&quot;</span><span class="s1">);                   </span><span class="s3">//To get Reminder Tasks</span><span class="s1"> 
+            InputStreamReader inputStreamReader = </span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream); 
+            BufferedReader bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
+ 
+            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">Date : &quot; </span><span class="s1">+ date + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">).getBytes()); 
+            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Todo List :- </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">).getBytes()); 
+            i=</span><span class="s4">1</span><span class="s1">; 
+            </span><span class="s0">while </span><span class="s1">(i&lt;=</span><span class="s4">8</span><span class="s1">) { 
+                data=bufferedReader.readLine(); 
+                fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">+i+</span><span class="s2">&quot;. &quot;</span><span class="s1">+data).getBytes()); 
+                i++; 
+            } 
+            fileInputStream.close(); 
+            fos.close(); 
+ 
+            AlertDialog.Builder a = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(about.</span><span class="s0">this</span><span class="s1">); 
+            a.setMessage(</span><span class="s2">&quot;Tasks exported successfully to /sdcard/Documents/&quot;</span><span class="s1">) 
+                    .setCancelable(</span><span class="s0">true</span><span class="s1">) 
+                    .setPositiveButton(</span><span class="s2">&quot;Dismiss&quot;</span><span class="s1">, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
+                        @Override 
+                        </span><span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) { 
+                            dialogInterface.cancel(); 
+                        } 
+                    }); 
+            AlertDialog alert = a.create(); 
+            alert.setTitle(</span><span class="s2">&quot;Done!&quot;</span><span class="s1">); 
+            alert.show(); 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+            e.printStackTrace(); 
+        } 
+    } 
+} 
+</span></pre>
+</body>
+</html>

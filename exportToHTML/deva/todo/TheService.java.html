@@ -1,0 +1,163 @@
+<html>
+<head>
+<title>TheService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+.s3 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+TheService.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">deva.todo; 
+ 
+</span><span class="s0">import </span><span class="s1">android.annotation.TargetApi; 
+</span><span class="s0">import </span><span class="s1">android.app.Notification; 
+</span><span class="s0">import </span><span class="s1">android.app.NotificationManager; 
+</span><span class="s0">import </span><span class="s1">android.app.PendingIntent; 
+</span><span class="s0">import </span><span class="s1">android.app.Service; 
+</span><span class="s0">import </span><span class="s1">android.content.Intent; 
+</span><span class="s0">import </span><span class="s1">android.os.Build; 
+</span><span class="s0">import </span><span class="s1">android.os.IBinder; 
+</span><span class="s0">import </span><span class="s1">android.util.Log; 
+ 
+</span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
+</span><span class="s0">import </span><span class="s1">java.io.FileInputStream; 
+ 
+</span><span class="s0">import </span><span class="s1">java.io.FileOutputStream; 
+</span><span class="s0">import </span><span class="s1">java.io.IOException; 
+</span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
+ 
+</span><span class="s0">public class </span><span class="s1">TheService </span><span class="s0">extends </span><span class="s1">Service  { 
+    </span><span class="s0">public </span><span class="s1">String lol; 
+    </span><span class="s0">public </span><span class="s1">String thrrrr; 
+    </span><span class="s0">final class </span><span class="s1">TheThread </span><span class="s0">implements </span><span class="s1">Runnable { 
+        </span><span class="s0">int </span><span class="s1">servv; 
+        TheThread (</span><span class="s0">int </span><span class="s1">serviceId) 
+        { 
+            </span><span class="s0">this</span><span class="s1">.servv = serviceId; 
+        } 
+ 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN) 
+        @Override 
+        </span><span class="s0">public void </span><span class="s1">run() { 
+            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;Inside TheThread.run()&quot;</span><span class="s1">); 
+            </span><span class="s0">try </span><span class="s1">{ 
+ 
+                FileOutputStream f1 = openFileOutput(</span><span class="s2">&quot;thrrr.db&quot;</span><span class="s1">, MODE_PRIVATE); 
+                f1.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
+                f1.close(); 
+ 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;Creating notification...&quot;</span><span class="s1">); 
+                Intent inn = </span><span class="s0">new </span><span class="s1">Intent(getApplicationContext(), <a href="MainActivity.java.html">MainActivity</a>.</span><span class="s0">class</span><span class="s1">); 
+                PendingIntent pIn = PendingIntent.getActivity(getApplicationContext(), </span><span class="s3">0</span><span class="s1">, inn, </span><span class="s3">0</span><span class="s1">); 
+                Notification noti = </span><span class="s0">new </span><span class="s1">Notification.Builder(getApplicationContext()) 
+                        .setTicker(</span><span class="s2">&quot;Hey there!&quot;</span><span class="s1">) 
+                        .setContentTitle(</span><span class="s2">&quot;Reminder!&quot;</span><span class="s1">) 
+                        .setContentText(</span><span class="s2">&quot;You have tasks remaining to do.&quot;</span><span class="s1">) 
+                        .setSmallIcon(R.mipmap.ic_launcher) 
+                        .setContentIntent(pIn) 
+                        .build(); 
+                noti.flags |= Notification.FLAG_AUTO_CANCEL; 
+                noti.flags |= Notification.PRIORITY_HIGH; 
+                noti.flags |= Notification.DEFAULT_LIGHTS; 
+                noti.flags |= Notification.DEFAULT_VIBRATE; 
+                noti.flags |= Notification.DEFAULT_SOUND; 
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;...notification successfully created!&quot;</span><span class="s1">); 
+ 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;synchronize() running...&quot;</span><span class="s1">); 
+                </span><span class="s0">synchronized </span><span class="s1">(</span><span class="s0">this</span><span class="s1">) { 
+                    wait(</span><span class="s3">15000</span><span class="s1">); 
+                } 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;synchronize() completed.&quot;</span><span class="s1">); 
+ 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;Creating FileInputStream...&quot;</span><span class="s1">); 
+                FileInputStream f13 = openFileInput(</span><span class="s2">&quot;row1.db&quot;</span><span class="s1">); 
+                InputStreamReader ias3 = </span><span class="s0">new </span><span class="s1">InputStreamReader(f13); 
+                BufferedReader br3 = </span><span class="s0">new </span><span class="s1">BufferedReader(ias3); 
+                lol = br3.readLine(); 
+                f13.close(); 
+                Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;...FileInputStream successfully created and read.&quot;</span><span class="s1">); 
+ 
+                </span><span class="s0">if </span><span class="s1">(lol.equals(</span><span class="s2">&quot;1&quot;</span><span class="s1">)) { 
+                    nm.notify(</span><span class="s3">0</span><span class="s1">, noti); 
+                    Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;Notification sent.&quot;</span><span class="s1">); 
+ 
+                } 
+                </span><span class="s0">else</span><span class="s1"> 
+                { 
+                    Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;Notification NOT sent.&quot;</span><span class="s1">); 
+                } 
+                FileOutputStream fi = openFileOutput(</span><span class="s2">&quot;thrrr.db&quot;</span><span class="s1">, MODE_PRIVATE); 
+                fi.write((</span><span class="s2">&quot;0&quot;</span><span class="s1">).getBytes()); 
+                fi.close(); 
+            } </span><span class="s0">catch </span><span class="s1">(InterruptedException | IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;run() Completed.&quot;</span><span class="s1">); 
+            stopSelf(</span><span class="s0">this</span><span class="s1">.servv); 
+            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;TheThread completed.&quot;</span><span class="s1">); 
+        } 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onCreate() { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(); 
+ 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public int </span><span class="s1">onStartCommand(Intent intent, </span><span class="s0">int </span><span class="s1">flags, </span><span class="s0">int </span><span class="s1">startId) { 
+        Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;Inside TheService.onStartCommand()&quot;</span><span class="s1">); 
+ 
+        </span><span class="s0">try </span><span class="s1">{ 
+            FileInputStream f13 = openFileInput(</span><span class="s2">&quot;thrrr.db&quot;</span><span class="s1">); 
+            InputStreamReader ias3 = </span><span class="s0">new </span><span class="s1">InputStreamReader(f13); 
+            BufferedReader br3 = </span><span class="s0">new </span><span class="s1">BufferedReader(ias3); 
+            thrrrr = br3.readLine(); 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+            e.printStackTrace(); 
+            thrrrr = </span><span class="s2">&quot;0&quot;</span><span class="s1">; 
+        } 
+        </span><span class="s0">if </span><span class="s1">(thrrrr.equals(</span><span class="s2">&quot;0&quot;</span><span class="s1">)) 
+        { 
+            Thread thr = </span><span class="s0">new </span><span class="s1">Thread(</span><span class="s0">new </span><span class="s1">TheThread(startId)); 
+            thr.start(); 
+            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;TheThread started using TheService.onStartCommand()&quot;</span><span class="s1">); 
+        } 
+        Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;TheService.onStartCommand() completed.&quot;</span><span class="s1">); 
+        </span><span class="s0">return </span><span class="s1">START_STICKY; 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onDestroy() { 
+        </span><span class="s0">super</span><span class="s1">.onDestroy(); 
+        Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;Inside TheService.onDestroy()&quot;</span><span class="s1">); 
+        </span><span class="s0">if</span><span class="s1">(lol.equals(</span><span class="s2">&quot;1&quot;</span><span class="s1">)) 
+        { 
+            Intent ino = </span><span class="s0">new </span><span class="s1">Intent(); 
+            ino.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES); 
+            ino.setAction(</span><span class="s2">&quot;You&quot;</span><span class="s1">); 
+            sendBroadcast(ino); 
+            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;Broadcast sent using TheService.onDestroy()&quot;</span><span class="s1">); 
+        } 
+        Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">,</span><span class="s2">&quot;TheService.onDestroy() completed&quot;</span><span class="s1">); 
+    } 
+    @Override 
+    </span><span class="s0">public </span><span class="s1">IBinder onBind(Intent intent) { 
+        </span><span class="s0">return null</span><span class="s1">; 
+    } 
+} 
+</span></pre>
+</body>
+</html>

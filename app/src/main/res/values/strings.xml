@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ToDo List</string>
+    <string name="about1">To add a task, simply type in the text-field and press ADD.\nTo remove a task, simply tap on it.</string>
+    <string name="about2">This app is currently in beta version, supports only up to max.8 tasks.</string>
+    <string name="exit">Exit</string>
+    <string name="add">Add</string>
+    <string name="about">About</string>
+    <string name="_3">3.</string>
+    <string name="_2">2.</string>
+    <string name="_1">1.</string>
+    <string name="author">This app is made by #deva</string>
+    <string name="reminder_time">Reminder time(min.):</string>
+    <string name="about_">About :</string>
+    <string name="export">Export</string>
+    <string-array name="spinner_entries">
+        <item>30</item>
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+</resources>
