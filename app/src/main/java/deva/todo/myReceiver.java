@@ -13,7 +13,7 @@ public class myReceiver extends BroadcastReceiver {
         if(action.equals("myBroadcast")||action.equals("android.intent.action.BOOT_COMPLETED")) {
             Intent serviceIntent = new Intent(context, NotificationService.class);
             context.startService(serviceIntent);
-            Log.d("debug", "Broadcast Received in myReceiver, NotificationService is started.");
+            Log.d("receiverDebug", "Broadcast received in myReceiver, NotificationService is started.");
         }
     }
 }

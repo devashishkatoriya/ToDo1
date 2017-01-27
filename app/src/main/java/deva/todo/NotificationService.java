@@ -7,6 +7,7 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,13 +20,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class NotificationService extends Service  {
 
     private String lol,remind,date;
+    private final String LOG_TAG = "serviceDebug";
     private int i,spinner_number;
     private File directory,myFile;
     private FileOutputStream fos;
@@ -37,6 +38,7 @@ public class NotificationService extends Service  {
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         super.onStartCommand(intent,flags,startId);
+        Log.d(LOG_TAG,"Inside onStartCommand()");
         lol = "1";
         try {
             fileInputStream = openFileInput("row1.txt");                                            //For checking Status
@@ -47,19 +49,22 @@ public class NotificationService extends Service  {
         }catch (IOException e)
         {
             lol = "1";
+            Log.d(LOG_TAG,"Got row1 IOException :- "+e);
         }
         Thread myThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 synchronized (NotificationService.this) {
                     try {
-                        df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");                    //Wed, 4 Jul 2008 12:08:56 -0530
+                        Log.d(LOG_TAG,"Got location as "+Environment.getExternalStorageDirectory().getPath());
+                        df = DateFormat.getDateTimeInstance();
+                        //df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");                    //Wed, 4 Jul 2008 12:08:56 -0530
                         date = df.format(Calendar.getInstance().getTime());
-                        directory = new File("/sdcard/logs");
+                        directory = new File(Environment.getExternalStorageDirectory().getPath()+"/logs/");
                         if (!directory.exists()) {
                             directory.mkdir();
                         }
-                        myFile = new File("/sdcard/logs/todo_log.txt");                             //Log file creation
+                        myFile = new File(Environment.getExternalStorageDirectory().getPath()+"/logs/"+"todo_log.txt");                             //Log file creation
                         myFile.createNewFile();
                         fos = new FileOutputStream(myFile, true);
                         fos.write(("\n\n" + date).getBytes());
@@ -130,36 +135,39 @@ public class NotificationService extends Service  {
 
                     } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
-                        Log.d("ServiceDebug", "At catch() of TheThread.");
+                        Log.d(LOG_TAG, "At catch() of TheThread :- "+e);
                         try {
                             fos = openFileOutput("spinner.txt", MODE_PRIVATE);
                             fos.write(("25").getBytes());
                             fos.close();
                         } catch (IOException e1) {
                             e1.printStackTrace();
+                            Log.d(LOG_TAG, "At 2nd catch() of TheThread :- "+e1);
                         }
                     }
                 }
             }
         });
         myThread.start();
+        Log.d(LOG_TAG,"onStartCommand() completed.");
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(LOG_TAG,"At onDestroy()");
         if(lol.equals("1"))
         {
             Intent ino = new Intent();
             ino.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             ino.setAction("myBroadcast");
+            Log.d(LOG_TAG,"Broadcast sent.");
             sendBroadcast(ino);
-            Log.d("ServiceDebug","Broadcast sent using TheService.onDestroy()");
         }
         else
         {
-            Log.d("ServiceDebug","Broadcast NOT sent using TheService.onDestroy()");
+            Log.d(LOG_TAG,"Broadcast NOT sent.");
         }
     }
 

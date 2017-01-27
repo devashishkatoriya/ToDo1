@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final String LOG_TAG = "mainActivityDebug";
 
     //Permission code that will be checked in the method onRequestPermissionsResult
     private int STORAGE_PERMISSION_CODE = 23;
@@ -67,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
         typeFace();
         read();
-        flash();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                flash();
+            }
+        }, 1000);
 
         bAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //If the app has not the permission then asking for the permission
+        Log.d(LOG_TAG,"Requesting permission.");
         requestStoragePermission();
     }
 
@@ -184,9 +195,11 @@ public class MainActivity extends AppCompatActivity {
             //If permission is granted
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Thank you for granting the Permission",Toast.LENGTH_SHORT).show();
+                Log.d(LOG_TAG,"Permission granted.");
             }else
             {
                 Toast.makeText(this,"Sorry, but we need Storage Permission for Exporting Files",Toast.LENGTH_LONG).show();
+                Log.d(LOG_TAG,"Permission NOT granted, exiting app.");
                 finish();
             }
         }
@@ -203,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         t6.setTypeface(face);
         t7.setTypeface(face);
         t8.setTypeface(face);
-        Log.d("MainActivity","typeFace() completed.");
+        Log.d(LOG_TAG,"typeFace() completed.");
     }
     private void row_status()
     {
@@ -249,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("MainActivity","row_status() completed.");
+        Log.d(LOG_TAG,"row_status() completed.");
     }
 
     private void flash() {
@@ -296,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         {
             row[7]=1;
         }
-        Log.d("MainActivity","flash() completed");
+        Log.d(LOG_TAG,"flash() completed");
     }
 
     @Override
@@ -305,8 +318,16 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         write_function();
         row_status();
-        service_caller();
-        Log.d("MainActivity","Activity paused.");
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                service_caller();
+            }
+        }, 1000);
+
+        Log.d(LOG_TAG,"Activity paused.");
     }
     private void write_function()
     {
@@ -325,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("MainActivity","write_function() completed.");
+        Log.d(LOG_TAG,"write_function() completed.");
     }
     private void read()
     {
@@ -367,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 t8.setText(lol);
             }
             f1.close();
-            Log.d("MainActivity","read() completed.");
+            Log.d(LOG_TAG,"read() completed.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -601,14 +622,14 @@ public class MainActivity extends AppCompatActivity {
                         write_function();
                         row_status();
                         Toast.makeText(getApplicationContext(),"Thank you for using this application!",Toast.LENGTH_SHORT).show();
-                        Log.d("MainActivity","Activity Finished using exit();");
+                        Log.d(LOG_TAG,"Activity finished using exit()");
                         finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("MainActivity","At exit(), dialog cancelled.");
+                        Log.d(LOG_TAG,"At exit(), dialog cancelled.");
                         dialogInterface.cancel();
                     }
                 });
@@ -627,7 +648,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 intent.setAction("myBroadcast");
                 sendBroadcast(intent);
-                Log.d("MainActivity","Broadcast sent using service_caller()");
+                Log.d(LOG_TAG,"Broadcast sent using service_caller()");
                 break;
             }
         }
@@ -636,7 +657,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("MainActivity","Activity Destroyed!");
+        Log.d(LOG_TAG,"Activity Destroyed!");
     }
     /*
     public void ClearAll()
