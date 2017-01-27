@@ -22,12 +22,14 @@ about.java</FONT>
  
 </span><span class="s0">import </span><span class="s1">android.app.AlertDialog; 
 </span><span class="s0">import </span><span class="s1">android.content.DialogInterface; 
+</span><span class="s0">import </span><span class="s1">android.os.Environment; 
 </span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
 </span><span class="s0">import </span><span class="s1">android.os.Bundle; 
 </span><span class="s0">import </span><span class="s1">android.util.Log; 
 </span><span class="s0">import </span><span class="s1">android.view.View; 
 </span><span class="s0">import </span><span class="s1">android.widget.Button; 
 </span><span class="s0">import </span><span class="s1">android.widget.Spinner; 
+</span><span class="s0">import </span><span class="s1">android.widget.Toast; 
  
 </span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
 </span><span class="s0">import </span><span class="s1">java.io.File; 
@@ -36,22 +38,24 @@ about.java</FONT>
 </span><span class="s0">import </span><span class="s1">java.io.IOException; 
 </span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
 </span><span class="s0">import </span><span class="s1">java.text.DateFormat; 
-</span><span class="s0">import </span><span class="s1">java.text.SimpleDateFormat; 
 </span><span class="s0">import </span><span class="s1">java.util.Calendar; 
  
 </span><span class="s0">public class </span><span class="s1">about </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+ 
+    </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;aboutActivityDebug&quot;</span><span class="s1">; 
  
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
         </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_about); 
-        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;At Activity_About onCreate()&quot;</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onCreate()&quot;</span><span class="s1">); 
  
         Button bExport = (Button) findViewById(R.id.button4); 
         bExport.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() { 
             @Override 
             </span><span class="s0">public void </span><span class="s1">onClick(View v) { 
                 export_function(); 
+                Log.d(LOG_TAG,</span><span class="s2">&quot;Exporting file&quot;</span><span class="s1">); 
             } 
         }); 
     } 
@@ -59,7 +63,7 @@ about.java</FONT>
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onPause() { 
         </span><span class="s0">super</span><span class="s1">.onPause(); 
-        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;Inside About_activity.onPause()&quot;</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;Inside onPause()&quot;</span><span class="s1">); 
         Spinner spinner = (Spinner)findViewById(R.id.spinner); 
         </span><span class="s0">assert </span><span class="s1">spinner != </span><span class="s0">null</span><span class="s1">; 
         String text = String.valueOf(spinner.getSelectedItem()); 
@@ -67,26 +71,28 @@ about.java</FONT>
             FileOutputStream fileOutputStream = openFileOutput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">,MODE_PRIVATE); 
             fileOutputStream.write((text).getBytes()); 
             fileOutputStream.close(); 
-            Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;spinner.txt created!&quot;</span><span class="s1">); 
+            Log.d(LOG_TAG,</span><span class="s2">&quot;spinner.txt created!&quot;</span><span class="s1">); 
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
         } 
-        Log.d(</span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">,</span><span class="s2">&quot;About_activity completed.&quot;</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;About_activity completed.&quot;</span><span class="s1">); 
     } 
  
     </span><span class="s0">private void </span><span class="s1">export_function() 
     { 
-        DateFormat df = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s2">&quot;EEE, d MMM yyyy HH:mm:ss Z&quot;</span><span class="s1">);        </span><span class="s3">//Wed, 4 Jul 2008 12:08:56 -0530</span><span class="s1"> 
+        DateFormat df = DateFormat.getDateTimeInstance();        </span><span class="s3">//Wed, 4 Jul 2008 12:08:56 -0530</span><span class="s1"> 
         String date = df.format(Calendar.getInstance().getTime()); 
         String data; 
         </span><span class="s0">int </span><span class="s1">i; 
         </span><span class="s0">try </span><span class="s1">{ 
  
-            File directory = </span><span class="s0">new </span><span class="s1">File(</span><span class="s2">&quot;/sdcard/Documents&quot;</span><span class="s1">); 
+            Log.d(LOG_TAG,</span><span class="s2">&quot;Location is &quot;</span><span class="s1">+Environment.getExternalStorageDirectory().getPath()); 
+ 
+            File directory = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/Documents/&quot;</span><span class="s1">); 
             </span><span class="s0">if </span><span class="s1">(!directory.exists()) { 
                 directory.mkdir(); 
             } 
-            File myFile = </span><span class="s0">new </span><span class="s1">File(</span><span class="s2">&quot;/sdcard/Documents/my_todo_list.txt&quot;</span><span class="s1">);             </span><span class="s3">//Export file creation</span><span class="s1"> 
+            File myFile = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/Documents/&quot;</span><span class="s1">+</span><span class="s2">&quot;my_todo_list.txt&quot;</span><span class="s1">);             </span><span class="s3">//Export file creation</span><span class="s1"> 
             myFile.createNewFile(); 
             FileOutputStream fos = </span><span class="s0">new </span><span class="s1">FileOutputStream(myFile, </span><span class="s0">false</span><span class="s1">); 
  
@@ -95,7 +101,7 @@ about.java</FONT>
             BufferedReader bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
  
             fos.write((</span><span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">Date : &quot; </span><span class="s1">+ date + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">).getBytes()); 
-            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Todo List :- </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">).getBytes()); 
+            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">ToDo List :- </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">).getBytes()); 
             i=</span><span class="s4">1</span><span class="s1">; 
             </span><span class="s0">while </span><span class="s1">(i&lt;=</span><span class="s4">8</span><span class="s1">) { 
                 data=bufferedReader.readLine(); 
@@ -117,8 +123,11 @@ about.java</FONT>
             AlertDialog alert = a.create(); 
             alert.setTitle(</span><span class="s2">&quot;Done!&quot;</span><span class="s1">); 
             alert.show(); 
+            Log.d(LOG_TAG,</span><span class="s2">&quot;File successfully exported&quot;</span><span class="s1">); 
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
+            Toast.makeText(about.</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;IO Error occurred!&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+            Log.d(LOG_TAG,</span><span class="s2">&quot;IO Error occurred :- &quot;</span><span class="s1">+e); 
         } 
     } 
 } 

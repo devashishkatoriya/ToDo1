@@ -31,7 +31,7 @@ myReceiver.java</FONT>
         </span><span class="s0">if</span><span class="s1">(action.equals(</span><span class="s2">&quot;myBroadcast&quot;</span><span class="s1">)||action.equals(</span><span class="s2">&quot;android.intent.action.BOOT_COMPLETED&quot;</span><span class="s1">)) { 
             Intent serviceIntent = </span><span class="s0">new </span><span class="s1">Intent(context, <a href="NotificationService.java.html">NotificationService</a>.</span><span class="s0">class</span><span class="s1">); 
             context.startService(serviceIntent); 
-            Log.d(</span><span class="s2">&quot;debug&quot;</span><span class="s1">, </span><span class="s2">&quot;Broadcast Received in myReceiver, NotificationService is started.&quot;</span><span class="s1">); 
+            Log.d(</span><span class="s2">&quot;receiverDebug&quot;</span><span class="s1">, </span><span class="s2">&quot;Broadcast received in myReceiver, NotificationService is started.&quot;</span><span class="s1">); 
         } 
     } 
 } 
