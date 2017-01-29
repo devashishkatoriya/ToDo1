@@ -27,15 +27,17 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String LOG_TAG = "mainActivityDebug";
+    private final static String LOG_TAG = "mainActivityDebug";
 
     //Permission code that will be checked in the method onRequestPermissionsResult
-    private int STORAGE_PERMISSION_CODE = 23;
+    private final static int STORAGE_PERMISSION_CODE = 23;
 
     private int []row = new int[8];
     private TextView t1,t2,t3,t4,t5,t6,t7,t8;
     private EditText e1;
     private String temp;
+
+    private  myAlarmManager alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         myPermission();
 
+        alarm = new myAlarmManager();
+
+        if(alarm != null){
+            alarm.CancelAlarm(this.getApplicationContext());
+        }
+
         t1 =(TextView) findViewById(R.id.textView);
         t2 =(TextView) findViewById(R.id.textView2);
         t3 =(TextView) findViewById(R.id.textView3);
@@ -53,16 +61,7 @@ public class MainActivity extends AppCompatActivity {
         t6 =(TextView) findViewById(R.id.textView6);
         t7 =(TextView) findViewById(R.id.textView7);
         t8 =(TextView) findViewById(R.id.textView8);
-        assert t1 != null;
-        assert t2 != null;
-        assert t3 != null;
-        assert t4 != null;
-        assert t5 != null;
-        assert t6 != null;
-        assert t7 != null;
-        assert t8 != null;
         e1 = (EditText) findViewById(R.id.editText);
-        assert e1 != null;
 
         Button bAdd = (Button) findViewById(R.id.button);
         Button bExit = (Button) findViewById(R.id.button2);
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Do something after 5s = 5000ms
+                // Do something after 1s = 1000ms
                 flash();
             }
         }, 1000);
@@ -218,52 +217,6 @@ public class MainActivity extends AppCompatActivity {
         t8.setTypeface(face);
         Log.d(LOG_TAG,"typeFace() completed.");
     }
-    private void row_status()
-    {
-      try {
-            FileOutputStream f7 = openFileOutput("row1.txt",MODE_PRIVATE);
-            if(row[0]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[1]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[2]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[3]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[4]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[5]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[6]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else if (row[7]==1)
-            {
-                f7.write(("1").getBytes());
-            }
-            else
-            {
-                f7.write(("0").getBytes());
-            }
-            f7.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d(LOG_TAG,"row_status() completed.");
-    }
 
     private void flash() {
         if(t1.getText().equals("")) {
@@ -317,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onPause();
         write_function();
-        row_status();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -416,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void two()
@@ -438,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void three()
@@ -458,7 +408,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void four()
@@ -476,7 +425,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void five()
@@ -492,7 +440,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void six()
@@ -506,7 +453,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void seven()
@@ -518,7 +464,6 @@ public class MainActivity extends AppCompatActivity {
             t7.setText(temp);
             t8.setText("");
             flash();
-            write_function();
         }
     }
     private void eight()
@@ -528,7 +473,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, (t8.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
             t8.setText("");
             row[7]=0;
-            write_function();
         }
     }
 
@@ -614,22 +558,18 @@ public class MainActivity extends AppCompatActivity {
     {
 
         AlertDialog.Builder a = new AlertDialog.Builder(MainActivity.this);
-        a.setMessage("Are you sure you want to close this app ?")
+        a.setMessage(R.string.confirmation)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        write_function();
-                        row_status();
-                        Toast.makeText(getApplicationContext(),"Thank you for using this application!",Toast.LENGTH_SHORT).show();
-                        Log.d(LOG_TAG,"Activity finished using exit()");
+                        Toast.makeText(getApplicationContext(), R.string.thank_you,Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d(LOG_TAG,"At exit(), dialog cancelled.");
                         dialogInterface.cancel();
                     }
                 });
@@ -637,18 +577,40 @@ public class MainActivity extends AppCompatActivity {
         alert.setTitle("Alert!");
         alert.show();
     }
+
     private void service_caller()
     {
         int i;
+
         for(i=0;i<8;i++)
         {
             if(row[i]==1)
             {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-                intent.setAction("myBroadcast");
-                sendBroadcast(intent);
-                Log.d(LOG_TAG,"Broadcast sent using service_caller()");
+                int spinner_number = 30;
+                try
+                {
+                    FileInputStream fileInputStream = openFileInput("spinner.txt");     //To get Reminder Value
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                    spinner_number = Integer.parseInt(bufferedReader.readLine());
+                    fileInputStream.close();
+                    Log.d(LOG_TAG, "Got spinner as " + spinner_number);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(LOG_TAG,"Oh! spinner.txt was NOT created! Don't worry, I created it for you.");
+                    try {
+                        FileOutputStream fos = openFileOutput("spinner.txt",MODE_PRIVATE);
+                        fos.write((""+30).getBytes());
+                        fos.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                        Log.d(LOG_TAG,"uh oh! Got IOException :- "+e);
+                    }
+                }
+                if(alarm != null){
+                    Log.d(LOG_TAG,"Alarm is called to set.");
+                    alarm.SetAlarm(this.getApplicationContext(),spinner_number);
+                }
                 break;
             }
         }
@@ -659,22 +621,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(LOG_TAG,"Activity Destroyed!");
     }
-    /*
-    public void ClearAll()
-    {
-        eight();
-        seven();
-        six();
-        five();
-        four();
-        three();
-        two();
-        one();
-    }
-
-    public void ClearOne()
-    {
-        one();
-    }
-    */
 }

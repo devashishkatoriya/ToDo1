@@ -54,6 +54,7 @@ public class about extends AppCompatActivity {
             Log.d(LOG_TAG,"spinner.txt created!");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d(LOG_TAG,"Got IO Exception :- "+e);
         }
         Log.d(LOG_TAG,"About_activity completed.");
     }

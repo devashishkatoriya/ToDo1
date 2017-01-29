@@ -5,13 +5,17 @@
     <string name="exit">Exit</string>
     <string name="add">Add</string>
     <string name="about">About</string>
-    <string name="_3">3.</string>
-    <string name="_2">2.</string>
-    <string name="_1">1.</string>
-    <string name="author">This app is made by #deva</string>
+    <string name="_3" translatable="false">3.</string>
+    <string name="_2" translatable="false">2.</string>
+    <string name="_1" translatable="false">1.</string>
+    <string name="author">This app is made by #devashish</string>
     <string name="reminder_time">Reminder time(min.):</string>
     <string name="about_">About :</string>
     <string name="export">Export</string>
+    <string name="thank_you">Thank you for using this application!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirmation">Are you sure you want to close this app ?</string>
     <string-array name="spinner_entries">
         <item>30</item>
         <item>1</item>
@@ -23,5 +27,8 @@
         <item>40</item>
         <item>50</item>
         <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>180</item>
     </string-array>
 </resources>

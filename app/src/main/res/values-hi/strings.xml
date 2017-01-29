@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">टूडू सूची</string>
+    <string name="author">इस एप्लीकेशन को #देवाशीष ने बनाया है.</string>
+    <string name="exit">बाहर जाएं</string>
+    <string name="export">सूची निर्यात</string>
+    <string name="reminder_time" translatable="false">अनुस्मारक समय :</string>
+    <string name="add">जोड़ें</string>
+    <string name="about_">एप्लिकेशन के बारे में :-</string>
+    <string name="about2">यह एप्लिकेशन वर्तमान में बीटा संस्करण में है । केवल 8 कार्यों के लिए समर्थन करता है ।</string>
+    <string name="about1">एक कार्य को जोड़ने के लिए, पाठ-क्षेत्र में टाइप करें और \'जोड़ें\' को दबाएँ । एक कार्य को निकालने के लिए, बस उस पर क्लिक करें ।</string>
+    <string name="about">लेखक</string>
+    <string name="yes">हां</string>
+    <string name="thank_you">धन्यवाद</string>
+    <string name="no">नहीं</string>
+    <string name="confirmation">आप इस एप्लिकेशन को बंद करना चाहते हैं, क्या आप सुनिश्चित हैं?</string>
+</resources>
