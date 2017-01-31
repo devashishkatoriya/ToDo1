@@ -14,10 +14,10 @@ import android.util.Log;
  * Created by Devashish Katoriya on 29-01-2017.
  */
 
-public class myAlarmManager extends BroadcastReceiver {
+public class MyAlarmManager extends BroadcastReceiver {
 
     final public static String ONE_TIME = "onetime";
-    public final static String LOG_TAG = "myAlarmManagerDebug";
+    public final static String LOG_TAG = "MyAlarmManagerDebug";
 
 
     @Override
@@ -27,15 +27,13 @@ public class myAlarmManager extends BroadcastReceiver {
         //Acquire the lock
         wl.acquire();
 
-        //You can do the processing here update the widget/remote views.
         Bundle extras = intent.getExtras();
-
         if(extras != null && extras.getBoolean(ONE_TIME, Boolean.FALSE)){
             //One time Alarm Code
             Log.d(LOG_TAG,"Got One-Time alarm");
         }
-        //Write your code to be performed later
 
+        //Write your code to be performed later
         Intent serviceIntent = new Intent(context, NotificationService.class);
         Log.d(LOG_TAG,"NotificationService started");
         context.startService(serviceIntent);
@@ -48,7 +46,7 @@ public class myAlarmManager extends BroadcastReceiver {
     {
         Log.d(LOG_TAG,"Got Repeating alarm");
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, myAlarmManager.class);
+        Intent intent = new Intent(context, MyAlarmManager.class);
         intent.putExtra(ONE_TIME, Boolean.FALSE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -59,16 +57,15 @@ public class myAlarmManager extends BroadcastReceiver {
     public void CancelAlarm(Context context)
     {
         Log.d(LOG_TAG,"Alarm Cancelled!");
-        Intent intent = new Intent(context, myAlarmManager.class);
+        Intent intent = new Intent(context, MyAlarmManager.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
     }
 
     public void setOnetimeTimer(Context context){
-        Log.d(LOG_TAG,"Got One-Time alarm");
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, myAlarmManager.class);
+        Intent intent = new Intent(context, MyAlarmManager.class);
         intent.putExtra(ONE_TIME, Boolean.TRUE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pi);

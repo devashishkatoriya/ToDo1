@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String LOG_TAG = "mainActivityDebug";
+    private final static String LOG_TAG = "MainActivityDebug";
 
     //Permission code that will be checked in the method onRequestPermissionsResult
     private final static int STORAGE_PERMISSION_CODE = 23;
@@ -37,21 +37,18 @@ public class MainActivity extends AppCompatActivity {
     private EditText e1;
     private String temp;
 
-    private  myAlarmManager alarm;
+    private MyAlarmManager alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        Log.d(LOG_TAG,"At onCreate()");
 
         myPermission();
 
-        alarm = new myAlarmManager();
-
-        if(alarm != null){
-            alarm.CancelAlarm(this.getApplicationContext());
-        }
+        alarm = new MyAlarmManager();
 
         t1 =(TextView) findViewById(R.id.textView);
         t2 =(TextView) findViewById(R.id.textView2);
@@ -194,13 +191,20 @@ public class MainActivity extends AppCompatActivity {
             //If permission is granted
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this,"Thank you for granting the Permission",Toast.LENGTH_SHORT).show();
-                Log.d(LOG_TAG,"Permission granted.");
             }else
             {
                 Toast.makeText(this,"Sorry, but we need Storage Permission for Exporting Files",Toast.LENGTH_LONG).show();
-                Log.d(LOG_TAG,"Permission NOT granted, exiting app.");
                 finish();
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG,"At onResume()");
+        if(alarm != null){
+            alarm.CancelAlarm(this.getApplicationContext());
         }
     }
 
@@ -215,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
         t6.setTypeface(face);
         t7.setTypeface(face);
         t8.setTypeface(face);
-        Log.d(LOG_TAG,"typeFace() completed.");
     }
 
     private void flash() {
@@ -262,24 +265,23 @@ public class MainActivity extends AppCompatActivity {
         {
             row[7]=1;
         }
-        Log.d(LOG_TAG,"flash() completed");
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
+        Log.d(LOG_TAG,"At onPause()");
+
         write_function();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Do something after 5s = 5000ms
+                // Do something after 1s = 1000ms
                 service_caller();
             }
         }, 1000);
-
-        Log.d(LOG_TAG,"Activity paused.");
     }
     private void write_function()
     {
@@ -298,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d(LOG_TAG,"write_function() completed.");
     }
     private void read()
     {
@@ -340,7 +341,6 @@ public class MainActivity extends AppCompatActivity {
                 t8.setText(lol);
             }
             f1.close();
-            Log.d(LOG_TAG,"read() completed.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
         {
             if(row[i]==1)
             {
-                int spinner_number = 30;
+                int spinner_number = 40;
                 try
                 {
                     FileInputStream fileInputStream = openFileInput("spinner.txt");     //To get Reminder Value
@@ -600,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(LOG_TAG,"Oh! spinner.txt was NOT created! Don't worry, I created it for you.");
                     try {
                         FileOutputStream fos = openFileOutput("spinner.txt",MODE_PRIVATE);
-                        fos.write((""+30).getBytes());
+                        fos.write((""+40).getBytes());
                         fos.close();
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -619,6 +619,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(LOG_TAG,"Activity Destroyed!");
+        Log.d(LOG_TAG,"At onDestroy()");
     }
 }

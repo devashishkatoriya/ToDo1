@@ -24,13 +24,13 @@ import java.util.Calendar;
 
 public class NotificationService extends Service  {
 
-    private final static String LOG_TAG = "serviceDebug";
+    private final static String LOG_TAG = "ServiceDebug";
     private long[] vib = {500, 1000};                                                    //Vibrate Time (in ms)
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         super.onStartCommand(intent,flags,startId);
-        Log.d(LOG_TAG,"Inside onStartCommand()");
+        Log.d(LOG_TAG,"At onStartCommand()");
 
         try
         {
@@ -52,8 +52,6 @@ public class NotificationService extends Service  {
             int spinner_number = Integer.parseInt(bufferedReader.readLine());
             fileInputStream.close();
             fos.write(("\nReminder time : " + spinner_number).getBytes());
-
-
 
             fileInputStream = openFileInput("data1.txt");                               //To get Reminder Tasks
             bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -87,7 +85,7 @@ public class NotificationService extends Service  {
 
 
             nm.notify(0, notification);
-            fos.write("\nNotified!".getBytes());
+            fos.write("\nNotification Sent!".getBytes());
 
             fos.write("\nProcess completed.".getBytes());
             fos.close();
@@ -96,8 +94,7 @@ public class NotificationService extends Service  {
             e.printStackTrace();
             Log.d(LOG_TAG,"uh oh! Got IOException :- "+e);
         }
-
-        Log.d(LOG_TAG,"onStartCommand() completed.");
+        Log.d(LOG_TAG,"Notification Sent!");
         stopSelf();
         return START_NOT_STICKY;
     }
@@ -105,7 +102,7 @@ public class NotificationService extends Service  {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(LOG_TAG,"onDestroy() called");
+        Log.d(LOG_TAG,"At onDestroy()");
     }
 
     @Nullable

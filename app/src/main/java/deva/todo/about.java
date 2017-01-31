@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 public class about extends AppCompatActivity {
 
-    private final String LOG_TAG = "aboutActivityDebug";
+    private final String LOG_TAG = "AboutActivityDebug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,6 @@ public class about extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 export_function();
-                Log.d(LOG_TAG,"Exporting file");
             }
         });
     }
@@ -43,7 +42,7 @@ public class about extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(LOG_TAG,"Inside onPause()");
+        Log.d(LOG_TAG,"At onPause()");
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
         assert spinner != null;
         String text = String.valueOf(spinner.getSelectedItem());
@@ -54,9 +53,7 @@ public class about extends AppCompatActivity {
             Log.d(LOG_TAG,"spinner.txt created!");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(LOG_TAG,"Got IO Exception :- "+e);
         }
-        Log.d(LOG_TAG,"About_activity completed.");
     }
 
     private void export_function()
@@ -66,8 +63,6 @@ public class about extends AppCompatActivity {
         String data;
         int i;
         try {
-
-            Log.d(LOG_TAG,"Location is "+Environment.getExternalStorageDirectory().getPath());
 
             File directory = new File(Environment.getExternalStorageDirectory().getPath()+"/Documents/");
             if (!directory.exists()) {
@@ -93,7 +88,7 @@ public class about extends AppCompatActivity {
             fos.close();
 
             AlertDialog.Builder a = new AlertDialog.Builder(about.this);
-            a.setMessage("Tasks exported successfully to /sdcard/Documents/")
+            a.setMessage("Tasks exported successfully to "+Environment.getExternalStorageDirectory().getPath()+"/Documents/")
                     .setCancelable(true)
                     .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
                         @Override
@@ -108,7 +103,12 @@ public class about extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(about.this,"IO Error occurred!", Toast.LENGTH_SHORT).show();
-            Log.d(LOG_TAG,"IO Error occurred :- "+e);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG,"At onDestroy()");
     }
 }
