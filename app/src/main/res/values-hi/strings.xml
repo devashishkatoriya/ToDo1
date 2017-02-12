@@ -4,7 +4,7 @@
     <string name="author">इस एप्लीकेशन को #देवाशीष ने बनाया है.</string>
     <string name="exit">बाहर जाएं</string>
     <string name="export">सूची निर्यात</string>
-    <string name="reminder_time" translatable="false">अनुस्मारक समय :</string>
+    <string name="reminder_time">अनुस्मारक समय :</string>
     <string name="add">जोड़ें</string>
     <string name="about_">एप्लिकेशन के बारे में :-</string>
     <string name="about2">यह एप्लिकेशन वर्तमान में बीटा संस्करण में है । केवल 8 कार्यों के लिए समर्थन करता है ।</string>
@@ -14,4 +14,13 @@
     <string name="thank_you">धन्यवाद</string>
     <string name="no">नहीं</string>
     <string name="confirmation">आप इस एप्लिकेशन को बंद करना चाहते हैं, क्या आप सुनिश्चित हैं?</string>
+    <string name="completed">पूरा हो गया</string>
+    <string name="task_added">कार्य सफलता पूर्वक जोड़ा गया</string>
+    <string name="overflow_flow">अतिप्रवाह त्रुटि</string>
+    <string name="_1">१.</string>
+    <string name="_2">२.</string>
+    <string name="_3">३.</string>
+    <string name="thanks_permission">अनुमति देने के लिए धन्यवाद</string>
+    <string name="sorry_permission">क्षमा करें, लेकिन हमें निर्यात फ़ाइलों के लिए स्टोरेज की अनुमति की जरूरत है</string>
+    <string name="request_permission">हमें निर्यात फ़ाइलों के लिए स्टोरेज की अनुमति की जरूरत है</string>
 </resources>

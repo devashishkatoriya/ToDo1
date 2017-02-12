@@ -47,23 +47,28 @@ MainActivity.java</FONT>
  
 </span><span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
  
-    </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;mainActivityDebug&quot;</span><span class="s1">; 
+    </span><span class="s0">private final static </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;MainActivityDebug&quot;</span><span class="s1">; 
  
     </span><span class="s3">//Permission code that will be checked in the method onRequestPermissionsResult</span><span class="s1"> 
-    </span><span class="s0">private int </span><span class="s1">STORAGE_PERMISSION_CODE = </span><span class="s4">23</span><span class="s1">; 
+    </span><span class="s0">private final static int </span><span class="s1">STORAGE_PERMISSION_CODE = </span><span class="s4">23</span><span class="s1">; 
  
     </span><span class="s0">private int </span><span class="s1">[]row = </span><span class="s0">new int</span><span class="s1">[</span><span class="s4">8</span><span class="s1">]; 
     </span><span class="s0">private </span><span class="s1">TextView t1,t2,t3,t4,t5,t6,t7,t8; 
     </span><span class="s0">private </span><span class="s1">EditText e1; 
     </span><span class="s0">private </span><span class="s1">String temp; 
  
+    </span><span class="s0">private </span><span class="s1">MyAlarmManager alarm; 
+ 
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
         </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_main); 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(</span><span class="s0">true</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onCreate()&quot;</span><span class="s1">); 
  
         myPermission(); 
+ 
+        alarm = </span><span class="s0">new </span><span class="s1">MyAlarmManager(); 
  
         t1 =(TextView) findViewById(R.id.textView); 
         t2 =(TextView) findViewById(R.id.textView2); 
@@ -73,16 +78,7 @@ MainActivity.java</FONT>
         t6 =(TextView) findViewById(R.id.textView6); 
         t7 =(TextView) findViewById(R.id.textView7); 
         t8 =(TextView) findViewById(R.id.textView8); 
-        </span><span class="s0">assert </span><span class="s1">t1 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t2 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t3 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t4 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t5 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t6 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t7 != </span><span class="s0">null</span><span class="s1">; 
-        </span><span class="s0">assert </span><span class="s1">t8 != </span><span class="s0">null</span><span class="s1">; 
         e1 = (EditText) findViewById(R.id.editText); 
-        </span><span class="s0">assert </span><span class="s1">e1 != </span><span class="s0">null</span><span class="s1">; 
  
         Button bAdd = (Button) findViewById(R.id.button); 
         Button bExit = (Button) findViewById(R.id.button2); 
@@ -94,7 +90,7 @@ MainActivity.java</FONT>
         handler.postDelayed(</span><span class="s0">new </span><span class="s1">Runnable() { 
             @Override 
             </span><span class="s0">public void </span><span class="s1">run() { 
-                </span><span class="s3">// Do something after 5s = 5000ms</span><span class="s1"> 
+                </span><span class="s3">// Do something after 1s = 1000ms</span><span class="s1"> 
                 flash(); 
             } 
         }, </span><span class="s4">1000</span><span class="s1">); 
@@ -198,7 +194,7 @@ MainActivity.java</FONT>
  
         </span><span class="s0">if </span><span class="s1">(ActivityCompat.shouldShowRequestPermissionRationale(</span><span class="s0">this</span><span class="s1">,Manifest.permission.WRITE_EXTERNAL_STORAGE)){ 
             </span><span class="s3">//Explain here why you need this permission</span><span class="s1"> 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;We need Storage Permission for Exporting Files&quot;</span><span class="s1">,Toast.LENGTH_LONG).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.request_permission,Toast.LENGTH_LONG).show(); 
         } 
  
         </span><span class="s3">//And finally ask for the permission</span><span class="s1"> 
@@ -214,14 +210,21 @@ MainActivity.java</FONT>
  
             </span><span class="s3">//If permission is granted</span><span class="s1"> 
             </span><span class="s0">if</span><span class="s1">(grantResults.length &gt;</span><span class="s4">0 </span><span class="s1">&amp;&amp; grantResults[</span><span class="s4">0</span><span class="s1">] == PackageManager.PERMISSION_GRANTED){ 
-                Toast.makeText(</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;Thank you for granting the Permission&quot;</span><span class="s1">,Toast.LENGTH_SHORT).show(); 
-                Log.d(LOG_TAG,</span><span class="s2">&quot;Permission granted.&quot;</span><span class="s1">); 
+                Toast.makeText(</span><span class="s0">this</span><span class="s1">, R.string.thanks_permission,Toast.LENGTH_SHORT).show(); 
             }</span><span class="s0">else</span><span class="s1"> 
             { 
-                Toast.makeText(</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;Sorry, but we need Storage Permission for Exporting Files&quot;</span><span class="s1">,Toast.LENGTH_LONG).show(); 
-                Log.d(LOG_TAG,</span><span class="s2">&quot;Permission NOT granted, exiting app.&quot;</span><span class="s1">); 
+                Toast.makeText(</span><span class="s0">this</span><span class="s1">, R.string.sorry_permission,Toast.LENGTH_LONG).show(); 
                 finish(); 
             } 
+        } 
+    } 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onResume() { 
+        </span><span class="s0">super</span><span class="s1">.onResume(); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onResume()&quot;</span><span class="s1">); 
+        </span><span class="s0">if</span><span class="s1">(alarm != </span><span class="s0">null</span><span class="s1">){ 
+            alarm.CancelAlarm(</span><span class="s0">this</span><span class="s1">.getApplicationContext()); 
         } 
     } 
  
@@ -236,53 +239,6 @@ MainActivity.java</FONT>
         t6.setTypeface(face); 
         t7.setTypeface(face); 
         t8.setTypeface(face); 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;typeFace() completed.&quot;</span><span class="s1">); 
-    } 
-    </span><span class="s0">private void </span><span class="s1">row_status() 
-    { 
-      </span><span class="s0">try </span><span class="s1">{ 
-            FileOutputStream f7 = openFileOutput(</span><span class="s2">&quot;row1.txt&quot;</span><span class="s1">,MODE_PRIVATE); 
-            </span><span class="s0">if</span><span class="s1">(row[</span><span class="s4">0</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">1</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">2</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">3</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">4</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">5</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">6</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else if </span><span class="s1">(row[</span><span class="s4">7</span><span class="s1">]==</span><span class="s4">1</span><span class="s1">) 
-            { 
-                f7.write((</span><span class="s2">&quot;1&quot;</span><span class="s1">).getBytes()); 
-            } 
-            </span><span class="s0">else</span><span class="s1"> 
-            { 
-                f7.write((</span><span class="s2">&quot;0&quot;</span><span class="s1">).getBytes()); 
-            } 
-            f7.close(); 
-        } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
-            e.printStackTrace(); 
-        } 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;row_status() completed.&quot;</span><span class="s1">); 
     } 
  
     </span><span class="s0">private void </span><span class="s1">flash() { 
@@ -329,25 +285,23 @@ MainActivity.java</FONT>
         { 
             row[</span><span class="s4">7</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
         } 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;flash() completed&quot;</span><span class="s1">); 
     } 
  
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onPause() 
     { 
         </span><span class="s0">super</span><span class="s1">.onPause(); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onPause()&quot;</span><span class="s1">); 
+ 
         write_function(); 
-        row_status(); 
         </span><span class="s0">final </span><span class="s1">Handler handler = </span><span class="s0">new </span><span class="s1">Handler(); 
         handler.postDelayed(</span><span class="s0">new </span><span class="s1">Runnable() { 
             @Override 
             </span><span class="s0">public void </span><span class="s1">run() { 
-                </span><span class="s3">// Do something after 5s = 5000ms</span><span class="s1"> 
+                </span><span class="s3">// Do something after 1s = 1000ms</span><span class="s1"> 
                 service_caller(); 
             } 
         }, </span><span class="s4">1000</span><span class="s1">); 
- 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;Activity paused.&quot;</span><span class="s1">); 
     } 
     </span><span class="s0">private void </span><span class="s1">write_function() 
     { 
@@ -366,7 +320,6 @@ MainActivity.java</FONT>
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
         } 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;write_function() completed.&quot;</span><span class="s1">); 
     } 
     </span><span class="s0">private void </span><span class="s1">read() 
     { 
@@ -408,7 +361,6 @@ MainActivity.java</FONT>
                 t8.setText(lol); 
             } 
             f1.close(); 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;read() completed.&quot;</span><span class="s1">); 
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
         } 
@@ -419,7 +371,7 @@ MainActivity.java</FONT>
  
         </span><span class="s0">if</span><span class="s1">(!t1.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t1.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t1.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t2.getText().toString(); 
             t1.setText(temp); 
             temp=t3.getText().toString(); 
@@ -436,14 +388,13 @@ MainActivity.java</FONT>
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">two() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t2.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t2.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t2.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t3.getText().toString(); 
             t2.setText(temp); 
             temp=t4.getText().toString(); 
@@ -458,14 +409,13 @@ MainActivity.java</FONT>
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">three() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t3.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t3.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t3.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t4.getText().toString(); 
             t3.setText(temp); 
             temp=t5.getText().toString(); 
@@ -478,14 +428,13 @@ MainActivity.java</FONT>
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">four() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t4.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t4.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t4.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t5.getText().toString(); 
             t4.setText(temp); 
             temp=t6.getText().toString(); 
@@ -496,14 +445,13 @@ MainActivity.java</FONT>
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">five() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t5.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t5.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t5.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t6.getText().toString(); 
             t5.setText(temp); 
             temp=t7.getText().toString(); 
@@ -512,43 +460,39 @@ MainActivity.java</FONT>
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">six() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t6.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t6.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t6.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t7.getText().toString(); 
             t6.setText(temp); 
             temp=t8.getText().toString(); 
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">seven() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t7.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t7.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t7.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             temp=t8.getText().toString(); 
             t7.setText(temp); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             flash(); 
-            write_function(); 
         } 
     } 
     </span><span class="s0">private void </span><span class="s1">eight() 
     { 
         </span><span class="s0">if</span><span class="s1">(!t8.getText().equals(</span><span class="s2">&quot;&quot;</span><span class="s1">)) 
         { 
-            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t8.getText().toString() + </span><span class="s2">&quot; Completed!&quot;</span><span class="s1">), Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, (t8.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show(); 
             t8.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
             row[</span><span class="s4">7</span><span class="s1">]=</span><span class="s4">0</span><span class="s1">; 
-            write_function(); 
         } 
     } 
  
@@ -563,60 +507,60 @@ MainActivity.java</FONT>
                     t1.setText(my_text); 
                     row[</span><span class="s4">0</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">1</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t2.setText(my_text); 
                     row[</span><span class="s4">1</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">2</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t3.setText(my_text); 
                     row[</span><span class="s4">2</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">3</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t4.setText(my_text); 
                     row[</span><span class="s4">3</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">4</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t5.setText(my_text); 
                     row[</span><span class="s4">4</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">5</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t6.setText(my_text); 
                     row[</span><span class="s4">5</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">6</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t7.setText(my_text); 
                     row[</span><span class="s4">6</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else if</span><span class="s1">(row[</span><span class="s4">7</span><span class="s1">]==</span><span class="s4">0</span><span class="s1">) 
                 { 
                     t8.setText(my_text); 
                     row[</span><span class="s4">7</span><span class="s1">]=</span><span class="s4">1</span><span class="s1">; 
                     e1.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">); 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Task successfully added.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.task_added, Toast.LENGTH_SHORT).show(); 
                 } 
                 </span><span class="s0">else</span><span class="s1"> 
                 { 
-                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Overflow Error!&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                    Toast.makeText(MainActivity.</span><span class="s0">this</span><span class="s1">, R.string.overflow_flow, Toast.LENGTH_SHORT).show(); 
                 } 
  
             } </span><span class="s0">catch </span><span class="s1">(Exception e) { 
@@ -634,22 +578,18 @@ MainActivity.java</FONT>
     { 
  
         AlertDialog.Builder a = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(MainActivity.</span><span class="s0">this</span><span class="s1">); 
-        a.setMessage(</span><span class="s2">&quot;Are you sure you want to close this app ?&quot;</span><span class="s1">) 
+        a.setMessage(R.string.confirmation) 
                 .setCancelable(</span><span class="s0">false</span><span class="s1">) 
-                .setPositiveButton(</span><span class="s2">&quot;Yes&quot;</span><span class="s1">, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
+                .setPositiveButton(R.string.yes, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
                     @Override 
                     </span><span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) { 
-                        write_function(); 
-                        row_status(); 
-                        Toast.makeText(getApplicationContext(),</span><span class="s2">&quot;Thank you for using this application!&quot;</span><span class="s1">,Toast.LENGTH_SHORT).show(); 
-                        Log.d(LOG_TAG,</span><span class="s2">&quot;Activity finished using exit()&quot;</span><span class="s1">); 
+                        Toast.makeText(getApplicationContext(), R.string.thank_you,Toast.LENGTH_SHORT).show(); 
                         finish(); 
                     } 
                 }) 
-                .setNegativeButton(</span><span class="s2">&quot;No&quot;</span><span class="s1">, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
+                .setNegativeButton(R.string.no, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
                     @Override 
                     </span><span class="s0">public void </span><span class="s1">onClick(DialogInterface dialogInterface, </span><span class="s0">int </span><span class="s1">i) { 
-                        Log.d(LOG_TAG,</span><span class="s2">&quot;At exit(), dialog cancelled.&quot;</span><span class="s1">); 
                         dialogInterface.cancel(); 
                     } 
                 }); 
@@ -657,18 +597,40 @@ MainActivity.java</FONT>
         alert.setTitle(</span><span class="s2">&quot;Alert!&quot;</span><span class="s1">); 
         alert.show(); 
     } 
+ 
     </span><span class="s0">private void </span><span class="s1">service_caller() 
     { 
         </span><span class="s0">int </span><span class="s1">i; 
+ 
         </span><span class="s0">for</span><span class="s1">(i=</span><span class="s4">0</span><span class="s1">;i&lt;</span><span class="s4">8</span><span class="s1">;i++) 
         { 
             </span><span class="s0">if</span><span class="s1">(row[i]==</span><span class="s4">1</span><span class="s1">) 
             { 
-                Intent intent = </span><span class="s0">new </span><span class="s1">Intent(); 
-                intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES); 
-                intent.setAction(</span><span class="s2">&quot;myBroadcast&quot;</span><span class="s1">); 
-                sendBroadcast(intent); 
-                Log.d(LOG_TAG,</span><span class="s2">&quot;Broadcast sent using service_caller()&quot;</span><span class="s1">); 
+                </span><span class="s0">int </span><span class="s1">spinner_number = </span><span class="s4">40</span><span class="s1">; 
+                </span><span class="s0">try</span><span class="s1"> 
+                { 
+                    FileInputStream fileInputStream = openFileInput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">);     </span><span class="s3">//To get Reminder Value</span><span class="s1"> 
+                    BufferedReader bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream)); 
+                    spinner_number = Integer.parseInt(bufferedReader.readLine()); 
+                    fileInputStream.close(); 
+                    Log.d(LOG_TAG, </span><span class="s2">&quot;Got spinner as &quot; </span><span class="s1">+ spinner_number); 
+                } 
+                </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+                    e.printStackTrace(); 
+                    Log.d(LOG_TAG,</span><span class="s2">&quot;Oh! spinner.txt was NOT created! Don't worry, I created it for you.&quot;</span><span class="s1">); 
+                    </span><span class="s0">try </span><span class="s1">{ 
+                        FileOutputStream fos = openFileOutput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">,MODE_PRIVATE); 
+                        fos.write((</span><span class="s2">&quot;&quot;</span><span class="s1">+</span><span class="s4">40</span><span class="s1">).getBytes()); 
+                        fos.close(); 
+                    } </span><span class="s0">catch </span><span class="s1">(IOException e1) { 
+                        e1.printStackTrace(); 
+                        Log.d(LOG_TAG,</span><span class="s2">&quot;uh oh! Got IOException :- &quot;</span><span class="s1">+e); 
+                    } 
+                } 
+                </span><span class="s0">if</span><span class="s1">(alarm != </span><span class="s0">null</span><span class="s1">){ 
+                    Log.d(LOG_TAG,</span><span class="s2">&quot;Alarm is called to set.&quot;</span><span class="s1">); 
+                    alarm.SetAlarm(</span><span class="s0">this</span><span class="s1">.getApplicationContext(),spinner_number); 
+                } 
                 </span><span class="s0">break</span><span class="s1">; 
             } 
         } 
@@ -677,26 +639,8 @@ MainActivity.java</FONT>
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onDestroy() { 
         </span><span class="s0">super</span><span class="s1">.onDestroy(); 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;Activity Destroyed!&quot;</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onDestroy()&quot;</span><span class="s1">); 
     } 
-    </span><span class="s3">/* 
-    public void ClearAll() 
-    { 
-        eight(); 
-        seven(); 
-        six(); 
-        five(); 
-        four(); 
-        three(); 
-        two(); 
-        one(); 
-    } 
- 
-    public void ClearOne() 
-    { 
-        one(); 
-    } 
-    */</span><span class="s1"> 
 } 
 </span></pre>
 </body>

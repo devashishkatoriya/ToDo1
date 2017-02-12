@@ -45,7 +45,6 @@ public class NotificationService extends Service  {
             DateFormat df = DateFormat.getDateTimeInstance();
             String date = df.format(Calendar.getInstance().getTime());
             fos.write(("\n\n" + date).getBytes());
-            fos.write("\nProcess Started.".getBytes());
 
             FileInputStream fileInputStream = openFileInput("spinner.txt");             //To get Reminder Value
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
@@ -87,7 +86,6 @@ public class NotificationService extends Service  {
             nm.notify(0, notification);
             fos.write("\nNotification Sent!".getBytes());
 
-            fos.write("\nProcess completed.".getBytes());
             fos.close();
 
         } catch (IOException e) {

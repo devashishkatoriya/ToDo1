@@ -42,7 +42,7 @@ about.java</FONT>
  
 </span><span class="s0">public class </span><span class="s1">about </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
  
-    </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;aboutActivityDebug&quot;</span><span class="s1">; 
+    </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">; 
  
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
@@ -55,7 +55,6 @@ about.java</FONT>
             @Override 
             </span><span class="s0">public void </span><span class="s1">onClick(View v) { 
                 export_function(); 
-                Log.d(LOG_TAG,</span><span class="s2">&quot;Exporting file&quot;</span><span class="s1">); 
             } 
         }); 
     } 
@@ -63,7 +62,7 @@ about.java</FONT>
     @Override 
     </span><span class="s0">protected void </span><span class="s1">onPause() { 
         </span><span class="s0">super</span><span class="s1">.onPause(); 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;Inside onPause()&quot;</span><span class="s1">); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onPause()&quot;</span><span class="s1">); 
         Spinner spinner = (Spinner)findViewById(R.id.spinner); 
         </span><span class="s0">assert </span><span class="s1">spinner != </span><span class="s0">null</span><span class="s1">; 
         String text = String.valueOf(spinner.getSelectedItem()); 
@@ -75,7 +74,6 @@ about.java</FONT>
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
         } 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;About_activity completed.&quot;</span><span class="s1">); 
     } 
  
     </span><span class="s0">private void </span><span class="s1">export_function() 
@@ -85,8 +83,6 @@ about.java</FONT>
         String data; 
         </span><span class="s0">int </span><span class="s1">i; 
         </span><span class="s0">try </span><span class="s1">{ 
- 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;Location is &quot;</span><span class="s1">+Environment.getExternalStorageDirectory().getPath()); 
  
             File directory = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/Documents/&quot;</span><span class="s1">); 
             </span><span class="s0">if </span><span class="s1">(!directory.exists()) { 
@@ -112,7 +108,7 @@ about.java</FONT>
             fos.close(); 
  
             AlertDialog.Builder a = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(about.</span><span class="s0">this</span><span class="s1">); 
-            a.setMessage(</span><span class="s2">&quot;Tasks exported successfully to /sdcard/Documents/&quot;</span><span class="s1">) 
+            a.setMessage(</span><span class="s2">&quot;Tasks exported successfully to &quot;</span><span class="s1">+Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/Documents/&quot;</span><span class="s1">) 
                     .setCancelable(</span><span class="s0">true</span><span class="s1">) 
                     .setPositiveButton(</span><span class="s2">&quot;Dismiss&quot;</span><span class="s1">, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
                         @Override 
@@ -127,8 +123,13 @@ about.java</FONT>
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
             Toast.makeText(about.</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;IO Error occurred!&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;IO Error occurred :- &quot;</span><span class="s1">+e); 
         } 
+    } 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onDestroy() { 
+        </span><span class="s0">super</span><span class="s1">.onDestroy(); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onDestroy()&quot;</span><span class="s1">); 
     } 
 } 
 </span></pre>

@@ -7,8 +7,8 @@
 .s0 { color: rgb(0,0,128); font-weight: bold; }
 .s1 { color: rgb(0,0,0); }
 .s2 { color: rgb(0,128,0); font-weight: bold; }
-.s3 { color: rgb(128,128,128); font-style: italic; }
-.s4 { color: rgb(0,0,255); }
+.s3 { color: rgb(0,0,255); }
+.s4 { color: rgb(128,128,128); font-style: italic; }
 </style>
 </head>
 <BODY BGCOLOR="#ffffff">
@@ -28,7 +28,6 @@ NotificationService.java</FONT>
 </span><span class="s0">import </span><span class="s1">android.content.Intent; 
 </span><span class="s0">import </span><span class="s1">android.media.RingtoneManager; 
 </span><span class="s0">import </span><span class="s1">android.os.Environment; 
-</span><span class="s0">import </span><span class="s1">android.os.Handler; 
 </span><span class="s0">import </span><span class="s1">android.os.IBinder; 
 </span><span class="s0">import </span><span class="s1">android.support.annotation.Nullable; 
 </span><span class="s0">import </span><span class="s1">android.util.Log; 
@@ -45,240 +44,83 @@ NotificationService.java</FONT>
  
 </span><span class="s0">public class </span><span class="s1">NotificationService </span><span class="s0">extends </span><span class="s1">Service  { 
  
-    </span><span class="s0">private </span><span class="s1">String lol,remind,date; 
-    </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;serviceDebug&quot;</span><span class="s1">; 
-    </span><span class="s0">private int </span><span class="s1">i,spinner_number; 
-    </span><span class="s0">private </span><span class="s1">File directory,myFile; 
-    </span><span class="s0">private </span><span class="s1">FileOutputStream fos; 
-    </span><span class="s0">private </span><span class="s1">FileInputStream fileInputStream; 
-    </span><span class="s0">private </span><span class="s1">InputStreamReader inputStreamReader; 
-    </span><span class="s0">private </span><span class="s1">BufferedReader bufferedReader; 
-    </span><span class="s0">private </span><span class="s1">DateFormat df; 
+    </span><span class="s0">private final static </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;ServiceDebug&quot;</span><span class="s1">; 
+    </span><span class="s0">private long</span><span class="s1">[] vib = {</span><span class="s3">500</span><span class="s1">, </span><span class="s3">1000</span><span class="s1">};                                                    </span><span class="s4">//Vibrate Time (in ms)</span><span class="s1"> 
  
     @Override 
     </span><span class="s0">public int </span><span class="s1">onStartCommand(Intent intent, </span><span class="s0">int </span><span class="s1">flags, </span><span class="s0">final int </span><span class="s1">startId) { 
         </span><span class="s0">super</span><span class="s1">.onStartCommand(intent,flags,startId); 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;Inside onStartCommand()&quot;</span><span class="s1">); 
-        lol = </span><span class="s2">&quot;1&quot;</span><span class="s1">; 
-        </span><span class="s0">try </span><span class="s1">{ 
-            fileInputStream = openFileInput(</span><span class="s2">&quot;row1.txt&quot;</span><span class="s1">);                                </span><span class="s3">//For checking Status</span><span class="s1"> 
-            inputStreamReader = </span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream); 
-            bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
-            lol = bufferedReader.readLine(); 
-            fileInputStream.close(); 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;Got row1 as &quot;</span><span class="s1">+lol); 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;At onStartCommand()&quot;</span><span class="s1">); 
  
-            fileInputStream = openFileInput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">);                             </span><span class="s3">//To get Reminder Value</span><span class="s1"> 
-            inputStreamReader = </span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream); 
-            bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
-            spinner_number = Integer.parseInt(bufferedReader.readLine()); 
-            fileInputStream.close(); 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;Got spinner as &quot;</span><span class="s1">+spinner_number); 
-        }</span><span class="s0">catch </span><span class="s1">(IOException e) 
+        </span><span class="s0">try</span><span class="s1"> 
         { 
-            lol = </span><span class="s2">&quot;1&quot;</span><span class="s1">; 
-            spinner_number = </span><span class="s4">25</span><span class="s1">; 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;uh oh! Got row1 IOException :- &quot;</span><span class="s1">+e); 
+            File directory = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath() + </span><span class="s2">&quot;/logs/&quot;</span><span class="s1">); 
+            </span><span class="s0">if </span><span class="s1">(!directory.exists()) { 
+                directory.mkdir();                                                      </span><span class="s4">//Directory creation</span><span class="s1"> 
+            } 
+            File myFile = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath() + </span><span class="s2">&quot;/logs/&quot; </span><span class="s1">+ </span><span class="s2">&quot;todo_log.txt&quot;</span><span class="s1">); 
+            myFile.createNewFile();                                                     </span><span class="s4">//File creation</span><span class="s1"> 
+            FileOutputStream fos = </span><span class="s0">new </span><span class="s1">FileOutputStream(myFile, </span><span class="s0">true</span><span class="s1">); 
+ 
+            DateFormat df = DateFormat.getDateTimeInstance(); 
+            String date = df.format(Calendar.getInstance().getTime()); 
+            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">&quot; </span><span class="s1">+ date).getBytes()); 
+ 
+            FileInputStream fileInputStream = openFileInput(</span><span class="s2">&quot;spinner.txt&quot;</span><span class="s1">);             </span><span class="s4">//To get Reminder Value</span><span class="s1"> 
+            BufferedReader bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream)); 
+            </span><span class="s0">int </span><span class="s1">spinner_number = Integer.parseInt(bufferedReader.readLine()); 
+            fileInputStream.close(); 
+            fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Reminder time : &quot; </span><span class="s1">+ spinner_number).getBytes()); 
+ 
+            fileInputStream = openFileInput(</span><span class="s2">&quot;data1.txt&quot;</span><span class="s1">);                               </span><span class="s4">//To get Reminder Tasks</span><span class="s1"> 
+            bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream)); 
+            StringBuilder stringBuffer = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
+            </span><span class="s0">int </span><span class="s1">i = </span><span class="s3">1</span><span class="s1">; 
+            </span><span class="s0">while </span><span class="s1">(i &lt;= </span><span class="s3">8</span><span class="s1">) { 
+                stringBuffer.append(bufferedReader.readLine()).append(</span><span class="s2">&quot; &quot;</span><span class="s1">); 
+                i++; 
+            } 
+            String remind = stringBuffer.toString(); 
+            fileInputStream.close(); 
+ 
+            Intent intent1 = </span><span class="s0">new </span><span class="s1">Intent(NotificationService.</span><span class="s0">this</span><span class="s1">, MainActivity.</span><span class="s0">class</span><span class="s1">);   </span><span class="s4">//Creating Notification</span><span class="s1"> 
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(NotificationService.</span><span class="s0">this</span><span class="s1">); 
+            stackBuilder.addParentStack(MainActivity.</span><span class="s0">class</span><span class="s1">); 
+            stackBuilder.addNextIntent(intent1); 
+            PendingIntent pIn = stackBuilder.getPendingIntent(</span><span class="s3">0</span><span class="s1">, PendingIntent.FLAG_UPDATE_CURRENT); 
+            Notification notification = </span><span class="s0">new </span><span class="s1">Notification.Builder(NotificationService.</span><span class="s0">this</span><span class="s1">) 
+                    .setTicker(</span><span class="s2">&quot;Hey there!&quot;</span><span class="s1">) 
+                    .setContentTitle(</span><span class="s2">&quot;Reminder!&quot;</span><span class="s1">) 
+                    .setAutoCancel(</span><span class="s0">true</span><span class="s1">) 
+                    .setPriority(Notification.PRIORITY_HIGH) 
+                    .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND) 
+                    .setContentText(remind) 
+                    .setSmallIcon(R.mipmap.ic_launcher) 
+                    .setContentIntent(pIn) 
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) 
+                    .setVibrate(vib) 
+                    .build(); 
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); 
+ 
+ 
+            nm.notify(</span><span class="s3">0</span><span class="s1">, notification); 
+            fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Notification Sent!&quot;</span><span class="s1">.getBytes()); 
+ 
+            fos.close(); 
+ 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+            e.printStackTrace(); 
+            Log.d(LOG_TAG,</span><span class="s2">&quot;uh oh! Got IOException :- &quot;</span><span class="s1">+e); 
         } 
-        </span><span class="s3">/* 
-        Thread myThread = new Thread(new Runnable() { 
-            @Override 
-            public void run() { 
-                synchronized (NotificationService.this) { 
-                    try { 
-                        Log.d(LOG_TAG,&quot;Got location as &quot;+Environment.getExternalStorageDirectory().getPath()); 
-                        df = DateFormat.getDateTimeInstance(); 
-                        //df = new SimpleDateFormat(&quot;EEE, d MMM yyyy HH:mm:ss Z&quot;);                    //Wed, 4 Jul 2008 12:08:56 -0530 
-                        date = df.format(Calendar.getInstance().getTime()); 
-                        directory = new File(Environment.getExternalStorageDirectory().getPath()+&quot;/logs/&quot;); 
-                        if (!directory.exists()) { 
-                            directory.mkdir(); 
-                        } 
-                        myFile = new File(Environment.getExternalStorageDirectory().getPath()+&quot;/logs/&quot;+&quot;todo_log.txt&quot;);                             //Log file creation 
-                        myFile.createNewFile(); 
-                        fos = new FileOutputStream(myFile, true); 
-                        fos.write((&quot;\n\n&quot; + date).getBytes()); 
-                        fos.write(&quot;\nProcess Started.&quot;.getBytes()); 
- 
-                        fileInputStream = openFileInput(&quot;spinner.txt&quot;);                             //To get Reminder Value 
-                        inputStreamReader = new InputStreamReader(fileInputStream); 
-                        bufferedReader = new BufferedReader(inputStreamReader); 
-                        spinner_number = Integer.parseInt(bufferedReader.readLine()); 
-                        fileInputStream.close(); 
-                        fos.write((&quot;\nReminder value : &quot; + spinner_number).getBytes()); 
- 
-                        fos.write(&quot;\nWaiting...&quot;.getBytes()); 
-                        TimeUnit.MINUTES.sleep(spinner_number); 
-                        date = df.format(Calendar.getInstance().getTime()); 
-                        fos.write((&quot;\n&quot; + date).getBytes()); 
-                        fos.write(&quot;\nWait completed.&quot;.getBytes()); 
- 
-                        fileInputStream = openFileInput(&quot;data1.txt&quot;);                               //To get Reminder Tasks 
-                        inputStreamReader = new InputStreamReader(fileInputStream); 
-                        bufferedReader = new BufferedReader(inputStreamReader); 
-                        StringBuilder stringBuffer = new StringBuilder(); 
-                        i = 1; 
-                        while (i &lt;= 8) { 
-                            stringBuffer.append(bufferedReader.readLine()).append(&quot; &quot;); 
-                            i++; 
-                        } 
-                        remind = stringBuffer.toString(); 
-                        fileInputStream.close(); 
- 
-                        long[] vib = {500,1000};                                                    //Vibrate Time (in ms) 
- 
-                        Intent intent = new Intent(NotificationService.this, MainActivity.class); 
-                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(NotificationService.this); 
-                        stackBuilder.addParentStack(MainActivity.class); 
-                        stackBuilder.addNextIntent(intent); 
-                        PendingIntent pIn = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT); 
-                        Notification notification = new Notification.Builder(NotificationService.this) 
-                                .setTicker(&quot;Hey there!&quot;) 
-                                .setContentTitle(&quot;Reminder!&quot;) 
-                                .setAutoCancel(true) 
-                                .setPriority(Notification.PRIORITY_HIGH) 
-                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND) 
-                                .setContentText(remind) 
-                                .setSmallIcon(R.mipmap.ic_launcher) 
-                                .setContentIntent(pIn) 
-                                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) 
-                                .setVibrate(vib) 
-                                .build(); 
-                        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); 
- 
-                        fileInputStream = openFileInput(&quot;row1.txt&quot;); 
-                        inputStreamReader = new InputStreamReader(fileInputStream); 
-                        bufferedReader = new BufferedReader(inputStreamReader); 
-                        lol = bufferedReader.readLine(); 
-                        fileInputStream.close(); 
- 
-                        if (lol.equals(&quot;1&quot;)) { 
-                            nm.notify(0, notification); 
-                            fos.write(&quot;\nNotified!&quot;.getBytes()); 
-                        } else { 
-                            fos.write(&quot;\nNOT Notified.&quot;.getBytes()); 
-                        } 
- 
-                        fos.write(&quot;\nProcess completed.&quot;.getBytes()); 
-                        fos.close(); 
-                        stopSelf(); 
- 
-                    } catch (InterruptedException | IOException e) { 
-                        e.printStackTrace(); 
-                        Log.d(LOG_TAG, &quot;At catch() of TheThread :- &quot;+e); 
-                        try { 
-                            fos = openFileOutput(&quot;spinner.txt&quot;, MODE_PRIVATE); 
-                            fos.write((&quot;25&quot;).getBytes()); 
-                            fos.close(); 
-                        } catch (IOException e1) { 
-                            e1.printStackTrace(); 
-                            Log.d(LOG_TAG, &quot;At 2nd catch() of TheThread :- &quot;+e1); 
-                        } 
-                    } 
-                } 
-            } 
-        }); 
-        myThread.start(); 
-        */</span><span class="s1"> 
- 
-        </span><span class="s0">final </span><span class="s1">Handler handler = </span><span class="s0">new </span><span class="s1">Handler(); 
-        handler.postDelayed(</span><span class="s0">new </span><span class="s1">Runnable() { 
-            @Override 
-            </span><span class="s0">public void </span><span class="s1">run() { 
-                Log.d(LOG_TAG,</span><span class="s2">&quot;Handler started.&quot;</span><span class="s1">); 
-                </span><span class="s0">try </span><span class="s1">{ 
-                    Log.d(LOG_TAG,</span><span class="s2">&quot;Got location as &quot;</span><span class="s1">+Environment.getExternalStorageDirectory().getPath()); 
-                    df = DateFormat.getDateTimeInstance(); 
-                    </span><span class="s3">//df = new SimpleDateFormat(&quot;EEE, d MMM yyyy HH:mm:ss Z&quot;);                    //Wed, 4 Jul 2008 12:08:56 -0530</span><span class="s1"> 
-                    date = df.format(Calendar.getInstance().getTime()); 
-                    directory = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/logs/&quot;</span><span class="s1">); 
-                    </span><span class="s0">if </span><span class="s1">(!directory.exists()) { 
-                        directory.mkdir(); 
-                    } 
-                    myFile = </span><span class="s0">new </span><span class="s1">File(Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/logs/&quot;</span><span class="s1">+</span><span class="s2">&quot;todo_log.txt&quot;</span><span class="s1">);                             </span><span class="s3">//Log file creation</span><span class="s1"> 
-                    myFile.createNewFile(); 
-                    fos = </span><span class="s0">new </span><span class="s1">FileOutputStream(myFile, </span><span class="s0">true</span><span class="s1">); 
-                    fos.write((</span><span class="s2">&quot;</span><span class="s0">\n\n</span><span class="s2">&quot; </span><span class="s1">+ date).getBytes()); 
-                    fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Process Started.&quot;</span><span class="s1">.getBytes()); 
- 
-                    fos.write((</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Reminder time : &quot; </span><span class="s1">+ spinner_number).getBytes()); 
- 
-                    fileInputStream = openFileInput(</span><span class="s2">&quot;data1.txt&quot;</span><span class="s1">);                               </span><span class="s3">//To get Reminder Tasks</span><span class="s1"> 
-                    inputStreamReader = </span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream); 
-                    bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
-                    StringBuilder stringBuffer = </span><span class="s0">new </span><span class="s1">StringBuilder(); 
-                    i = </span><span class="s4">1</span><span class="s1">; 
-                    </span><span class="s0">while </span><span class="s1">(i &lt;= </span><span class="s4">8</span><span class="s1">) { 
-                        stringBuffer.append(bufferedReader.readLine()).append(</span><span class="s2">&quot; &quot;</span><span class="s1">); 
-                        i++; 
-                    } 
-                    remind = stringBuffer.toString(); 
-                    fileInputStream.close(); 
- 
-                    </span><span class="s0">long</span><span class="s1">[] vib = {</span><span class="s4">500</span><span class="s1">,</span><span class="s4">1000</span><span class="s1">};                                                    </span><span class="s3">//Vibrate Time (in ms)</span><span class="s1"> 
- 
-                    Intent intent = </span><span class="s0">new </span><span class="s1">Intent(NotificationService.</span><span class="s0">this</span><span class="s1">, <a href="MainActivity.java.html">MainActivity</a>.</span><span class="s0">class</span><span class="s1">);   </span><span class="s3">//Creating Notification</span><span class="s1"> 
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(NotificationService.</span><span class="s0">this</span><span class="s1">); 
-                    stackBuilder.addParentStack(<a href="MainActivity.java.html">MainActivity</a>.</span><span class="s0">class</span><span class="s1">); 
-                    stackBuilder.addNextIntent(intent); 
-                    PendingIntent pIn = stackBuilder.getPendingIntent(</span><span class="s4">0</span><span class="s1">, PendingIntent.FLAG_UPDATE_CURRENT); 
-                    Notification notification = </span><span class="s0">new </span><span class="s1">Notification.Builder(NotificationService.</span><span class="s0">this</span><span class="s1">) 
-                            .setTicker(</span><span class="s2">&quot;Hey there!&quot;</span><span class="s1">) 
-                            .setContentTitle(</span><span class="s2">&quot;Reminder!&quot;</span><span class="s1">) 
-                            .setAutoCancel(</span><span class="s0">true</span><span class="s1">) 
-                            .setPriority(Notification.PRIORITY_HIGH) 
-                            .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND) 
-                            .setContentText(remind) 
-                            .setSmallIcon(R.mipmap.ic_launcher) 
-                            .setContentIntent(pIn) 
-                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) 
-                            .setVibrate(vib) 
-                            .build(); 
-                    NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); 
- 
-                    fileInputStream = openFileInput(</span><span class="s2">&quot;row1.txt&quot;</span><span class="s1">);                        </span><span class="s3">//For rechecking current row1 status</span><span class="s1"> 
-                    inputStreamReader = </span><span class="s0">new </span><span class="s1">InputStreamReader(fileInputStream); 
-                    bufferedReader = </span><span class="s0">new </span><span class="s1">BufferedReader(inputStreamReader); 
-                    lol = bufferedReader.readLine(); 
-                    fileInputStream.close(); 
- 
-                    </span><span class="s0">if </span><span class="s1">(lol.equals(</span><span class="s2">&quot;1&quot;</span><span class="s1">)) {                                              </span><span class="s3">//Finally notifying user</span><span class="s1"> 
-                        nm.notify(</span><span class="s4">0</span><span class="s1">, notification); 
-                        fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Notified!&quot;</span><span class="s1">.getBytes()); 
-                    } </span><span class="s0">else </span><span class="s1">{ 
-                        fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">NOT Notified.&quot;</span><span class="s1">.getBytes()); 
-                    } 
- 
-                    fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Process completed.&quot;</span><span class="s1">.getBytes()); 
-                    fos.close(); 
-                    stopSelf(); 
-                } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
-                    e.printStackTrace(); 
-                    Log.d(LOG_TAG, </span><span class="s2">&quot;At catch() of Handler :- &quot;</span><span class="s1">+e); 
-                } 
-                Log.d(LOG_TAG, </span><span class="s2">&quot;Handler completed.&quot;</span><span class="s1">); 
-            } 
-        }, </span><span class="s4">60000</span><span class="s1">*spinner_number); 
-        Log.d(LOG_TAG,</span><span class="s2">&quot;onStartCommand() completed.&quot;</span><span class="s1">); 
-        </span><span class="s0">return </span><span class="s1">START_STICKY; 
+        Log.d(LOG_TAG,</span><span class="s2">&quot;Notification Sent!&quot;</span><span class="s1">); 
+        stopSelf(); 
+        </span><span class="s0">return </span><span class="s1">START_NOT_STICKY; 
     } 
  
     @Override 
     </span><span class="s0">public void </span><span class="s1">onDestroy() { 
         </span><span class="s0">super</span><span class="s1">.onDestroy(); 
         Log.d(LOG_TAG,</span><span class="s2">&quot;At onDestroy()&quot;</span><span class="s1">); 
-        </span><span class="s0">if</span><span class="s1">(lol.equals(</span><span class="s2">&quot;1&quot;</span><span class="s1">)) 
-        { 
-            Intent ino = </span><span class="s0">new </span><span class="s1">Intent(); 
-            ino.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES); 
-            ino.setAction(</span><span class="s2">&quot;myBroadcast&quot;</span><span class="s1">); 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;Broadcast sent.&quot;</span><span class="s1">); 
-            sendBroadcast(ino); 
-        } 
-        </span><span class="s0">else</span><span class="s1"> 
-        { 
-            Log.d(LOG_TAG,</span><span class="s2">&quot;Broadcast NOT sent.&quot;</span><span class="s1">); 
-        } 
     } 
  
     @Nullable 

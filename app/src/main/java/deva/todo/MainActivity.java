@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             //Explain here why you need this permission
-            Toast.makeText(MainActivity.this,"We need Storage Permission for Exporting Files",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, R.string.request_permission,Toast.LENGTH_LONG).show();
         }
 
         //And finally ask for the permission
@@ -190,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
             //If permission is granted
             if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this,"Thank you for granting the Permission",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.thanks_permission,Toast.LENGTH_SHORT).show();
             }else
             {
-                Toast.makeText(this,"Sorry, but we need Storage Permission for Exporting Files",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.sorry_permission,Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(!t1.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t1.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t1.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t2.getText().toString();
             t1.setText(temp);
             temp=t3.getText().toString();
@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t2.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t2.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t2.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t3.getText().toString();
             t2.setText(temp);
             temp=t4.getText().toString();
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t3.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t3.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t3.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t4.getText().toString();
             t3.setText(temp);
             temp=t5.getText().toString();
@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t4.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t4.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t4.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t5.getText().toString();
             t4.setText(temp);
             temp=t6.getText().toString();
@@ -431,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t5.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t5.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t5.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t6.getText().toString();
             t5.setText(temp);
             temp=t7.getText().toString();
@@ -446,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t6.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t6.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t6.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t7.getText().toString();
             t6.setText(temp);
             temp=t8.getText().toString();
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t7.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t7.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t7.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             temp=t8.getText().toString();
             t7.setText(temp);
             t8.setText("");
@@ -470,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if(!t8.getText().equals(""))
         {
-            Toast.makeText(MainActivity.this, (t8.getText().toString() + " Completed!"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, (t8.getText().toString() + getString(R.string.completed)), Toast.LENGTH_SHORT).show();
             t8.setText("");
             row[7]=0;
         }
@@ -487,60 +487,60 @@ public class MainActivity extends AppCompatActivity {
                     t1.setText(my_text);
                     row[0]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[1]==0)
                 {
                     t2.setText(my_text);
                     row[1]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[2]==0)
                 {
                     t3.setText(my_text);
                     row[2]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[3]==0)
                 {
                     t4.setText(my_text);
                     row[3]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[4]==0)
                 {
                     t5.setText(my_text);
                     row[4]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[5]==0)
                 {
                     t6.setText(my_text);
                     row[5]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[6]==0)
                 {
                     t7.setText(my_text);
                     row[6]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else if(row[7]==0)
                 {
                     t8.setText(my_text);
                     row[7]=1;
                     e1.setText("");
-                    Toast.makeText(MainActivity.this, "Task successfully added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.task_added, Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Overflow Error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.overflow_flow, Toast.LENGTH_SHORT).show();
                 }
 
             } catch (Exception e) {
