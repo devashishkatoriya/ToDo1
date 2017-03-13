@@ -22,10 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".about"
+        <activity android:name=".About"
             android:parentActivityName=".MainActivity">
             <intent-filter>
-                <action android:name="deva.todo.about" />
+                <action android:name="deva.todo.About" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

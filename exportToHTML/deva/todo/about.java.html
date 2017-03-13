@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>about.java</title>
+<title>About.java</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
 .ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
@@ -15,7 +15,7 @@
 <TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
 <TR><TD><CENTER>
 <FONT FACE="Arial, Helvetica" COLOR="#000000">
-about.java</FONT>
+About.java</FONT>
 </center></TD></TR></TABLE>
 <pre>
 <span class="s0">package </span><span class="s1">deva.todo; 
@@ -40,7 +40,7 @@ about.java</FONT>
 </span><span class="s0">import </span><span class="s1">java.text.DateFormat; 
 </span><span class="s0">import </span><span class="s1">java.util.Calendar; 
  
-</span><span class="s0">public class </span><span class="s1">about </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+</span><span class="s0">public class </span><span class="s1">About </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
  
     </span><span class="s0">private final </span><span class="s1">String LOG_TAG = </span><span class="s2">&quot;AboutActivityDebug&quot;</span><span class="s1">; 
  
@@ -74,6 +74,7 @@ about.java</FONT>
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
         } 
+        Toast.makeText(About.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;Reminder set for &quot;</span><span class="s1">+text+</span><span class="s2">&quot; min.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
     } 
  
     </span><span class="s0">private void </span><span class="s1">export_function() 
@@ -107,7 +108,7 @@ about.java</FONT>
             fileInputStream.close(); 
             fos.close(); 
  
-            AlertDialog.Builder a = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(about.</span><span class="s0">this</span><span class="s1">); 
+            AlertDialog.Builder a = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(About.</span><span class="s0">this</span><span class="s1">); 
             a.setMessage(</span><span class="s2">&quot;Tasks exported successfully to &quot;</span><span class="s1">+Environment.getExternalStorageDirectory().getPath()+</span><span class="s2">&quot;/Documents/&quot;</span><span class="s1">) 
                     .setCancelable(</span><span class="s0">true</span><span class="s1">) 
                     .setPositiveButton(</span><span class="s2">&quot;Dismiss&quot;</span><span class="s1">, </span><span class="s0">new </span><span class="s1">DialogInterface.OnClickListener() { 
@@ -122,7 +123,7 @@ about.java</FONT>
             Log.d(LOG_TAG,</span><span class="s2">&quot;File successfully exported&quot;</span><span class="s1">); 
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
             e.printStackTrace(); 
-            Toast.makeText(about.</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;IO Error occurred!&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+            Toast.makeText(About.</span><span class="s0">this</span><span class="s1">,</span><span class="s2">&quot;IO Error occurred!&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
         } 
     } 
  

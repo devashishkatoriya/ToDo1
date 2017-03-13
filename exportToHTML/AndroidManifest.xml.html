@@ -26,6 +26,7 @@ AndroidManifest.xml</FONT>
  
     </span><span class="s2">&lt;</span><span class="s5">uses-permission </span><span class="s1">android:name=</span><span class="s3">&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
     </span><span class="s2">&lt;</span><span class="s5">uses-permission </span><span class="s1">android:name=</span><span class="s3">&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
+    </span><span class="s2">&lt;</span><span class="s5">uses-permission </span><span class="s1">android:name=</span><span class="s3">&quot;android.permission.WAKE_LOCK&quot;</span><span class="s2">/&gt;</span><span class="s4"> 
     </span><span class="s2">&lt;</span><span class="s5">uses-permission </span><span class="s1">android:name=</span><span class="s3">&quot;android.permission.VIBRATE&quot;</span><span class="s2">/&gt;</span><span class="s4"> 
  
     </span><span class="s2">&lt;</span><span class="s5">application</span><span class="s2"> 
@@ -42,24 +43,27 @@ AndroidManifest.xml</FONT>
                 </span><span class="s2">&lt;</span><span class="s5">category </span><span class="s1">android:name=</span><span class="s3">&quot;android.intent.category.LAUNCHER&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
             </span><span class="s2">&lt;/</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
         </span><span class="s2">&lt;/</span><span class="s5">activity</span><span class="s2">&gt;</span><span class="s4"> 
-        </span><span class="s2">&lt;</span><span class="s5">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.about&quot;</span><span class="s2"> 
+        </span><span class="s2">&lt;</span><span class="s5">activity </span><span class="s1">android:name=</span><span class="s3">&quot;.About&quot;</span><span class="s2"> 
             </span><span class="s1">android:parentActivityName=</span><span class="s3">&quot;.MainActivity&quot;</span><span class="s2">&gt;</span><span class="s4"> 
             </span><span class="s2">&lt;</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
-                </span><span class="s2">&lt;</span><span class="s5">action </span><span class="s1">android:name=</span><span class="s3">&quot;deva.todo.about&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
+                </span><span class="s2">&lt;</span><span class="s5">action </span><span class="s1">android:name=</span><span class="s3">&quot;deva.todo.About&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
  
                 </span><span class="s2">&lt;</span><span class="s5">category </span><span class="s1">android:name=</span><span class="s3">&quot;android.intent.category.DEFAULT&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
             </span><span class="s2">&lt;/</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
         </span><span class="s2">&lt;/</span><span class="s5">activity</span><span class="s2">&gt;</span><span class="s4"> 
  
         </span><span class="s2">&lt;</span><span class="s5">receiver</span><span class="s2"> 
-            </span><span class="s1">android:name=</span><span class="s3">&quot;.myReceiver&quot;</span><span class="s2"> 
+            </span><span class="s1">android:name=</span><span class="s3">&quot;.MyAlarmManager&quot;</span><span class="s2"> 
+            </span><span class="s1">android:enabled=</span><span class="s3">&quot;true&quot;</span><span class="s2"> 
+            </span><span class="s1">android:exported=</span><span class="s3">&quot;false&quot;</span><span class="s2">&gt;</span><span class="s4"> 
+        </span><span class="s2">&lt;/</span><span class="s5">receiver</span><span class="s2">&gt;</span><span class="s4"> 
+ 
+        </span><span class="s2">&lt;</span><span class="s5">receiver</span><span class="s2"> 
+            </span><span class="s1">android:name=</span><span class="s3">&quot;.BootBroadcastReceiver&quot;</span><span class="s2"> 
             </span><span class="s1">android:enabled=</span><span class="s3">&quot;true&quot;</span><span class="s2"> 
             </span><span class="s1">android:exported=</span><span class="s3">&quot;false&quot;</span><span class="s2">&gt;</span><span class="s4"> 
             </span><span class="s2">&lt;</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
                 </span><span class="s2">&lt;</span><span class="s5">action </span><span class="s1">android:name=</span><span class="s3">&quot;android.intent.action.BOOT_COMPLETED&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
-            </span><span class="s2">&lt;/</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
-            </span><span class="s2">&lt;</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
-                </span><span class="s2">&lt;</span><span class="s5">action </span><span class="s1">android:name=</span><span class="s3">&quot;myBroadcast&quot; </span><span class="s2">/&gt;</span><span class="s4"> 
             </span><span class="s2">&lt;/</span><span class="s5">intent-filter</span><span class="s2">&gt;</span><span class="s4"> 
         </span><span class="s2">&lt;/</span><span class="s5">receiver</span><span class="s2">&gt;</span><span class="s4"> 
  

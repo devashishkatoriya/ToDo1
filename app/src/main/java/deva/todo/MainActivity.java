@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void about()
     {
-        Intent intent = new Intent("deva.todo.about");
+        Intent intent = new Intent("deva.todo.About");
         startActivity(intent);
     }
     private void exit()

@@ -12,6 +12,6 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         MyAlarmManager alarm = new MyAlarmManager();
-        alarm.SetAlarm(context,40);
+        alarm.SetAlarm(context,60);
     }
 }

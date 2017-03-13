@@ -102,10 +102,11 @@ NotificationService.java</FONT>
                     .build(); 
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE); 
  
- 
-            nm.notify(</span><span class="s3">0</span><span class="s1">, notification); 
-            fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Notification Sent!&quot;</span><span class="s1">.getBytes()); 
- 
+            </span><span class="s0">if</span><span class="s1">(!remind.equals(</span><span class="s2">&quot;        &quot;</span><span class="s1">)) 
+            { 
+                nm.notify(</span><span class="s3">0</span><span class="s1">, notification); 
+                fos.write(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Notification Sent!&quot;</span><span class="s1">.getBytes()); 
+            } 
             fos.close(); 
  
         } </span><span class="s0">catch </span><span class="s1">(IOException e) { 

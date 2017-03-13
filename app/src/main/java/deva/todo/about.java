@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class about extends AppCompatActivity {
+public class About extends AppCompatActivity {
 
     private final String LOG_TAG = "AboutActivityDebug";
 
@@ -54,6 +54,7 @@ public class about extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Toast.makeText(About.this, "Reminder set for "+text+" min.", Toast.LENGTH_SHORT).show();
     }
 
     private void export_function()
@@ -87,7 +88,7 @@ public class about extends AppCompatActivity {
             fileInputStream.close();
             fos.close();
 
-            AlertDialog.Builder a = new AlertDialog.Builder(about.this);
+            AlertDialog.Builder a = new AlertDialog.Builder(About.this);
             a.setMessage("Tasks exported successfully to "+Environment.getExternalStorageDirectory().getPath()+"/Documents/")
                     .setCancelable(true)
                     .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
@@ -102,7 +103,7 @@ public class about extends AppCompatActivity {
             Log.d(LOG_TAG,"File successfully exported");
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(about.this,"IO Error occurred!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(About.this,"IO Error occurred!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -82,10 +82,11 @@ public class NotificationService extends Service  {
                     .build();
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-
-            nm.notify(0, notification);
-            fos.write("\nNotification Sent!".getBytes());
-
+            if(!remind.equals("        "))
+            {
+                nm.notify(0, notification);
+                fos.write("\nNotification Sent!".getBytes());
+            }
             fos.close();
 
         } catch (IOException e) {
