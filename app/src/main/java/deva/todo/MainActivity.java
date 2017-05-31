@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     //Permission code that will be checked in the method onRequestPermissionsResult
     private final static int STORAGE_PERMISSION_CODE = 23;
 
-    private int []row = new int[8];
+    private int []row;
     private TextView t1,t2,t3,t4,t5,t6,t7,t8;
     private EditText e1;
     private String temp;
@@ -60,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
         t8 =(TextView) findViewById(R.id.textView8);
         e1 = (EditText) findViewById(R.id.editText);
 
-        Button bAdd = (Button) findViewById(R.id.button);
-        Button bExit = (Button) findViewById(R.id.button2);
-        Button bAbout = (Button) findViewById(R.id.button3);
-
         typeFace();
         read();
         final Handler handler = new Handler();
@@ -74,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
                 flash();
             }
         }, 1000);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        row = new int[8];
+
+        Button bAdd = (Button) findViewById(R.id.button);
+        Button bExit = (Button) findViewById(R.id.button2);
+        Button bAbout = (Button) findViewById(R.id.button3);
 
         bAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 eight();
             }
         });
+
+        alarm = new MyAlarmManager();
     }
 
     private void myPermission()
