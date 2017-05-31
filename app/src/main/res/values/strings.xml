@@ -16,12 +16,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="confirmation">Are you sure you want to close this app ?</string>
-    <string name="task_added">Task successfully added.</string>
-    <string name="overflow_flow">Overflow error!</string>
+    <string name="task_added">Task successfully added :)</string>
+    <string name="overflow_flow">Overflow error :(</string>
     <string name="completed"> completed!</string>
-    <string name="thanks_permission">Thank you for granting the Permission</string>
+    <string name="thanks_permission">Thank you for granting the Permission :)</string>
     <string name="sorry_permission">Sorry, but we need Storage Permission for Exporting Files</string>
-    <string name="request_permission">We need Storage Permission for Exporting Files</string>
+    <string name="request_permission">We need Storage Permission for Exporting Tasks</string>
     <string-array name="spinner_entries">
         <item>40</item>
         <item>1</item>
