@@ -16,8 +16,8 @@ import android.util.Log;
 
 public class MyAlarmManager extends BroadcastReceiver {
 
-    final public static String ONE_TIME = "onetime";
-    public final static String LOG_TAG = "MyAlarmManagerDebug";
+    private final static String ONE_TIME = "onetime";
+    private final static String LOG_TAG = "MyAlarmManagerDebug";
 
 
     @Override

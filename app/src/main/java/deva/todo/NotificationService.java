@@ -25,7 +25,7 @@ import java.util.Calendar;
 public class NotificationService extends Service  {
 
     private final static String LOG_TAG = "ServiceDebug";
-    private long[] vib = {500, 1000};                                                    //Vibrate Time (in ms)
+    private final long[] vib = {500, 1000};                                                    //Vibrate Time (in ms)
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
