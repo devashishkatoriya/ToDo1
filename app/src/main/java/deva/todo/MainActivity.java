@@ -606,11 +606,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 catch (IOException e) {
                     e.printStackTrace();
-                    Log.d(LOG_TAG,"Oh! spinner.txt was NOT created! Don't worry, I created it for you.");
                     try {
                         FileOutputStream fos = openFileOutput("spinner.txt",MODE_PRIVATE);
                         fos.write((""+40).getBytes());
                         fos.close();
+                        Log.d(LOG_TAG,"Oh! spinner.txt was NOT created! Don't worry, I created it for you.");
                     } catch (IOException e1) {
                         e1.printStackTrace();
                         Log.d(LOG_TAG,"uh oh! Got IOException :- "+e);
