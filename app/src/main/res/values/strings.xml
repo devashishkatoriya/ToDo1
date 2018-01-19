@@ -9,7 +9,7 @@
     <string name="_2">2.</string>
     <string name="_1">1.</string>
     <string name="author">This app is made by #devashish</string>
-    <string name="reminder_time">Reminder time(min.):</string>
+    <string name="reminder_time">Reminder time:</string>
     <string name="about_">About :</string>
     <string name="export">Export</string>
     <string name="thank_you">Thank you for using this application!</string>
@@ -23,13 +23,14 @@
     <string name="sorry_permission">Sorry, but we need Storage Permission for Exporting Files</string>
     <string name="request_permission">We need Storage Permission for Exporting Tasks</string>
     <string-array name="spinner_entries">
-        <item>40</item>
+        <item>50</item>
         <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
         <item>20</item>
         <item>30</item>
+        <item>40</item>
         <item>60</item>
         <item>90</item>
         <item>120</item>
