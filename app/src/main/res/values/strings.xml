@@ -25,6 +25,7 @@
     <string-array name="spinner_entries">
         <item>50</item>
         <item>1</item>
+        <item>2</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>

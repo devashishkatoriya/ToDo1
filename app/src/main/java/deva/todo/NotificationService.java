@@ -87,6 +87,10 @@ public class NotificationService extends Service  {
                 nm.notify(0, notification);
                 fos.write("\nNotification Sent!".getBytes());
             }
+            else
+            {
+                fos.write("\nNotification Empty!".getBytes());
+            }
             fos.close();
 
         } catch (IOException e) {
